@@ -1,0 +1,133 @@
+$layout-breakpoint-small: 960px;
+$lightblue: #cfeafd;
+$grey1: #f6f6f6;
+$grey2: #d9d9d9;
+$yellow: #fcc709;
+$blue1: #0b69db;
+$blue2: #3654c2;
+$black: #060606;
+$white: rgba(255, 255, 255);
+
+#profile {
+  display: flex;
+  background-color: $white;
+  height: fit-content;
+  flex-direction: row;
+  width: 100vw;
+  padding: 40px 20px;
+  justify-content: center;
+
+  .rightprofile {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    width: fit-content;
+    background-color: #f6f6f6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    div {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      .img-radius {
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+      }
+      p {
+        color: $black;
+        text-wrap: nowrap;
+        font-size: 20px;
+        font-weight: 500;
+      }
+      input[type="file"] {
+        display: none;
+      }
+      .custom-file-upload {
+        border: 1px solid $black;
+        display: inline-block;
+        color: $black;
+        margin: 10px 0;
+        text-wrap: nowrap;
+        padding: 8px 12px;
+        cursor: pointer;
+        &:hover {
+          color: $white;
+          background-color: #060606;
+        }
+      }
+      i {
+        text-align: center;
+        font-size: 38px;
+        color: $black;
+        border: solid 4px $black;
+        border-radius: 50%;
+        width: 80px;
+        margin: auto;
+        padding: 30px 20px;
+        margin: 20px 0;
+      }
+    }
+    ul {
+      text-align: end;
+      list-style: none;
+
+      width: 100%;
+      text-decoration: none;
+      li {
+        display: flex;
+        flex-direction: row;
+        text-align: end;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+        padding: 15px 8px;
+        border: solid 1px #d9d9d9;
+        border-right: none;
+        border-left: none;
+        cursor: pointer;
+        &:hover {
+          background-color: #d4d4d4;
+        }
+        i {
+          margin: 5px 8px;
+          color: $black;
+          border: solid 1.2px $black;
+
+          padding: 10px 12px;
+          border-radius: 50%;
+        }
+        a {
+          font-weight: 500;
+        }
+      }
+    }
+    div {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      .groupet {
+        display: flex;
+        flex-direction: row;
+        gap: 10;
+        label {
+          color: rgb(255, 255, 255);
+          font-size: 18px;
+          font-weight: 500;
+        }
+        input {
+          background-color: transparent;
+        }
+        i {
+          color: white;
+        }
+      }
+    }
+  }
+  .leftprofile {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    width: 60%;
+    background-color: #f6f6f6;
+  }
+}

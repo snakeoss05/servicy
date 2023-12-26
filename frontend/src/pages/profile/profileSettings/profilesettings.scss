@@ -1,0 +1,88 @@
+$layout-breakpoint-small: 960px;
+$lightblue: #cfeafd;
+$grey1: #f6f6f6;
+$grey2: #d9d9d9;
+$yellow: #fcc709;
+$blue1: #0b69db;
+$blue2: #3654c2;
+$black: #060606;
+$white: rgba(255, 255, 255);
+
+#profileSettings {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  h4 {
+    margin: 0 auto;
+    font-size: 26px;
+  }
+  div {
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+
+    input[type="file"] {
+      display: none;
+    }
+    .custom-file-upload {
+      border: 1px solid $black;
+      display: inline-block;
+      color: $black;
+      margin: 15px auto;
+      text-wrap: nowrap;
+      padding: 8px 12px;
+      cursor: pointer;
+      &:hover {
+        color: $white;
+        background-color: #060606;
+      }
+    }
+
+    .displayGrid {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      div {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      }
+      button {
+        background-color: $black;
+        color: $white;
+        font-size: 18px;
+        margin-top: 15px;
+
+        font-weight: 500;
+        letter-spacing: 1px;
+        transition: transform ease-in 0.3s;
+        padding: 8px;
+        &:hover {
+          transform: scale(0.98);
+        }
+      }
+      .groupField {
+        display: flex;
+        flex-direction: column;
+        text-align: end;
+        width: 100%;
+        margin-bottom: 8px;
+        margin-left: auto;
+
+        label {
+          font-size: 16px;
+          margin: 6px 0;
+        }
+        input {
+          font-size: larger;
+          text-align: end;
+          padding: 8px;
+          background-color: $white;
+          border: solid 1px $grey2;
+          outline: none;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+}

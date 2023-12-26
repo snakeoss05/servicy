@@ -1,0 +1,19 @@
+$layout-breakpoint-small: 960px;
+$lightblue: #cfeafd;
+$grey1: #f6f6f6;
+$grey2: #d9d9d9;
+$yellow: #fcc709;
+$blue1: #0b69db;
+$blue2: #3654c2;
+$black: #060606;
+$white: rgba(255, 255, 255);
+
+#createService {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  h4 {
+    margin: 0 auto;
+    font-size: 26px;
+  }
+}

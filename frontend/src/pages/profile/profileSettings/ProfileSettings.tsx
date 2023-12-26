@@ -1,0 +1,107 @@
+import React, { useState } from "react";
+import "./profilesettings.scss";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../../redux/actions/authActions";
+export default function ProfileSettings() {
+  let user = useSelector((state: any) => state.auth.user);
+  const dispatch = useDispatch();
+  const [profile, setProfile] = useState({
+    id: user.userid,
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    picture: "",
+  });
+  function handleInputsChanges(e: any) {
+    const { name, value } = e.target;
+    setProfile((prevstate) => ({ ...prevstate, [name]: value }));
+  }
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setProfile({ ...profile, picture: file });
+  };
+
+  const updatePrfoile = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("picture", profile.picture);
+      formData.append("id", profile.id);
+      formData.append("firstname", profile.firstname);
+      formData.append("lastname", profile.lastname);
+      formData.append("email", profile.email);
+      formData.append("password", profile.password);
+      const response = await axios.put(
+        "http://localhost:8000/api/user/update",
+        formData
+      );
+      if (response.status === 200 && response.data) {
+        console.log(response);
+        dispatch(updateUser(response.data)); // Dispatch the action with the plain object.
+      } else {
+        // Handle non-200 status or missing data response as needed.
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
+  return (
+    <div id="profileSettings">
+      <h4>تعديل الحساب</h4>
+      <div>
+        <label className="custom-file-upload">
+          <input type="file" name="picture" onChange={handleFileChange} />
+          حمل صورة الشخصية
+        </label>
+        <div className="displayGrid">
+          <div>
+            <div className="groupField">
+              <label htmlFor="firstname">الأسم</label>
+              <input
+                type="text"
+                name="firstname"
+                onChange={handleInputsChanges}
+                placeholder="الأسم"
+              />
+            </div>
+            <div className="groupField">
+              <label htmlFor="firstname">اللقب</label>
+              <input
+                type="text"
+                name="lastname"
+                onChange={handleInputsChanges}
+                placeholder="اللقب"
+              />
+            </div>
+          </div>
+          <div>
+            <div className="groupField ">
+              <label htmlFor="email">بريد الألكتوني</label>
+              <input
+                type="text"
+                name="email"
+                onChange={handleInputsChanges}
+                placeholder="بريد الألكترني"
+              />
+            </div>
+          </div>
+          <div>
+            <div className="groupField ">
+              <label htmlFor="email">كلمة الدخول</label>
+              <input
+                type="password"
+                name="password"
+                onChange={handleInputsChanges}
+                placeholder="كلمة الدخول"
+              />
+            </div>
+          </div>
+
+          <button onClick={updatePrfoile}>تحديث</button>
+        </div>
+      </div>
+    </div>
+  );
+}

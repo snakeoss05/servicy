@@ -1,0 +1,238 @@
+$layout-breakpoint-small: 960px;
+$lightblue: #cfeafd;
+$grey1: #f6f6f6;
+$grey2: #d9d9d9;
+$yellow: #fcc709;
+$blue1: #0b69db;
+$blue2: #3654c2;
+$black: #060606;
+$white: rgba(255, 255, 255);
+#multistep {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  .firstform {
+    width: fit-content;
+    padding: 60px;
+
+    animation: fadein 0.4s ease-in;
+    position: relative;
+    border-radius: 15px;
+    background-color: #c3cbdc;
+    background-image: linear-gradient(147deg, #c3cbdc 0%, #edf1f4 74%);
+
+    @keyframes fadein {
+      0% {
+        transform: translate(-50%);
+        opacity: 0;
+      }
+      100% {
+        transform: translate(0%);
+        opacity: 1;
+      }
+    }
+
+    h1 {
+      text-align: center;
+      margin: 2rem;
+      font-size: 28px;
+      letter-spacing: 1.3px;
+    }
+    .steps {
+      margin: auto;
+      width: 80%;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 30px;
+      height: 10px;
+      background-color: #ffffff;
+      border: solid 1px #75777f;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+        rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+      &::after {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 30%;
+        height: 100%;
+        right: 0;
+        top: 0;
+        background-image: linear-gradient(
+          85deg,
+          hsl(213deg 90% 45%) 0%,
+          hsl(219deg 70% 55%) 61%,
+          hsl(222deg 66% 59%) 78%,
+          hsl(225deg 63% 63%) 87%,
+          hsl(227deg 60% 66%) 92%,
+          hsl(228deg 56% 69%) 95%,
+          hsl(229deg 51% 72%) 98%,
+          hsl(231deg 46% 74%) 99%,
+          hsl(232deg 40% 77%) 100%,
+          hsl(233deg 33% 79%) 100%,
+          hsl(234deg 24% 81%) 100%,
+          hsl(234deg 14% 83%) 100%,
+          hsl(0deg 0% 85%) 100%
+        );
+      }
+    }
+
+    .groupeil {
+      display: flex;
+      flex-direction: column;
+      text-align: end;
+
+      width: 300px;
+      gap: 15px;
+
+      margin: 20px;
+      .map-container {
+        width: 100%;
+        height: 400px;
+      }
+      label {
+        font-size: 18px;
+        color: $black;
+      }
+      input {
+        background-color: transparent;
+        border: solid 2px $grey2;
+        outline: $grey2;
+        background-color: rgba(218, 215, 215, 0.664);
+        text-align: end;
+        padding: 5px 10px;
+        &:focus {
+          border: 1px solid rgb(165, 158, 158);
+        }
+      }
+      p {
+        color: rgb(216, 52, 52);
+      }
+    }
+    .nextprev {
+      display: flex;
+      padding: 8px 18px;
+      justify-content: space-between;
+      .disabled {
+        background-color: $grey2 !important;
+        border: solid 1px $lightblue;
+        padding: 6px 12px;
+        color: $white;
+        font-size: 18px;
+        outline: none;
+        font-weight: 500;
+        border-radius: 4px;
+        &:hover {
+          background-color: transparent;
+          color: $black;
+        }
+      }
+      .prev {
+        padding: 6px 12px;
+        border: $blue2 solid 1px;
+        background-color: transparent;
+        color: $blue1;
+      }
+      button {
+        padding: 8px 12px;
+        border: $blue2 solid 1px;
+        background-color: $blue1;
+        letter-spacing: 1.2px;
+        color: $white;
+        font-size: 16px;
+
+        outline: none;
+
+        font-weight: 600;
+        border-radius: 4px;
+
+        &:hover {
+          background-color: transparent;
+          color: $blue1;
+        }
+      }
+    }
+    .alert {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 8px 12px;
+      width: 50%;
+      color: $white;
+      margin: auto;
+      margin-top: 20px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 900;
+      align-items: center;
+      background-color: lightgreen;
+      p {
+        margin: 4px;
+      }
+    }
+  }
+  .secondform {
+    @extend .firstform;
+    .steps {
+      &::after {
+        content: "";
+        width: 60%;
+      }
+    }
+  }
+  .thirdform {
+    @extend .firstform;
+    .steps {
+      &::after {
+        width: 100%;
+      }
+    }
+  }
+}
+@media (max-width: $layout-breakpoint-small) {
+  #multistep {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .firstform {
+      margin: auto;
+      width: 80%;
+      padding: 20px;
+      h1 {
+        text-align: center;
+        margin: 2rem;
+        font-size: 20px;
+        letter-spacing: 1.3px;
+      }
+    }
+
+    .groupeil {
+      display: flex;
+      flex-direction: column;
+      text-align: end;
+
+      width: 80% !important;
+      gap: 10px !important;
+      margin: 10px auto !important;
+
+      label {
+        font-size: 16px;
+      }
+      input {
+        background-color: transparent;
+        border: solid 2px $grey2;
+        outline: $grey2;
+        background-color: rgba(218, 215, 215, 0.664);
+        text-align: end;
+        padding: 5px 10px;
+        &:focus {
+          border: 1px solid rgb(165, 158, 158);
+        }
+      }
+      p {
+        color: rgb(216, 52, 52);
+      }
+    }
+  }
+}
