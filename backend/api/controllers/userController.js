@@ -19,7 +19,6 @@ export default class UserController {
 
       return res.status(200).json(result.message);
     } catch (error) {
-      console.error(error);
       res.status(500).send("Internal server error.");
     }
   }
@@ -42,10 +41,8 @@ export default class UserController {
 
       const token = jwt.sign({ userid: user.userid }, secretOrPrivateKey);
 
-      user.picture = `${req.protocol}://${req.get("host")}/${user.profileimg}`;
       res.status(200).json({ token, user });
     } catch (error) {
-      console.error(error);
       res.status(500).send("Internal server error.");
     }
   }
@@ -56,7 +53,6 @@ export default class UserController {
     let fieldsToUpdate = [];
 
     if (firstname) {
-      // Assuming you are escaping the input to prevent SQL injection
       fieldsToUpdate.push(`firstname = '${firstname}'`);
     }
     if (lastname) {
@@ -68,34 +64,36 @@ export default class UserController {
     if (password) {
       const saltRounds = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, saltRounds);
+
       fieldsToUpdate.push(`password = '${hashedPassword}'`);
     }
     if (picture) {
       const filePath = picture.path;
-      const profileimg = filePath.replace(/\\/g, "/");
-      fieldsToUpdate.push(`profileimg = '${profileimg}'`);
+      const img1 = filePath.replace(/\\/g, "/");
+      fieldsToUpdate.push(
+        `profileimg = '${req.protocol}://${req.get("host")}/${img1}'`
+      );
     }
     if (fieldsToUpdate.length === 0) {
       return res.status(400).send({ message: "No fields to update" });
     }
+
     const convertArrayToObject = (array) => {
       const obj = {};
       array.forEach((item) => {
         const [key, value] = item.split(" = ");
 
-        obj[key] = value.replace(/^'(.+)'$/, "$1");
+        obj[key] = value?.replace(/^'(.+)'$/, "$1");
       });
       return obj;
     };
     try {
       await userDao.updateUser(fieldsToUpdate, id);
       const updatedValues = convertArrayToObject(fieldsToUpdate);
-      updatedValues.picture = `${req.protocol}://${req.get("host")}/${
-        updatedValues.profileimg
-      }`;
+
       return res.status(200).json(updatedValues);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(500).send("Internal server error.");
     }
   }
@@ -110,7 +108,6 @@ export default class UserController {
       const user = await userDao.getUserById(userid);
       res.json(user);
     } catch (error) {
-      console.error(error);
       res.status(500).json({ message: "Server error" });
     }
   }

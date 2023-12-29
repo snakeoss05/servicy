@@ -8,32 +8,38 @@ export default class serviceController {
   }
   static async CreateService(req, res) {
     const { userid, name, city, address, phonenumber, category } = req.body;
-    const { image1 } = req.file;
+    const file = req.file;
     let fieldsToUpdate = {};
 
-    name
-      ? (fieldsToUpdate.name = `'${name}'`)
-      : res.message("رجاء أختيار أسم الخدمة");
-    city
-      ? (fieldsToUpdate.city = `'${city}'`)
-      : res.message("الرجاء أختيار مدينة");
-    address
-      ? (fieldsToUpdate.address = `'${address}'`)
-      : res.message("الرجاء أختيار عنوان");
-    phonenumber
-      ? (fieldsToUpdate.phonenumber = `'${phonenumber}'`)
-      : res.message("الرجاء أدخال رقم الهاتف");
-    category
-      ? (fieldsToUpdate.category = `'${category}'`)
-      : res.message("الرجاء أختيار تصنيف الخدمة");
-
-    if (image1) {
-      const filePath = image1.path;
-      const img1 = filePath.replace(/\\/g, "/");
-      fieldsToUpdate.image1 = `'${img1}'`;
+    if (!file) {
+      return res.status(400).json({ error: "Please upload an image file." });
     }
-
+    const filePath = file.path;
+    const img1 = filePath.replace(/\\/g, "/");
+    fieldsToUpdate.image1 = `'${req.protocol}://${req.get("host")}/${img1}'`;
+    if (!name) {
+      return res.json({ message: "رجاء أختيار أسم الخدمة" });
+    }
+    fieldsToUpdate.name = `'${name}'`;
+    if (!city) {
+      return res.json({ message: "الرجاء أختيار مدينة" });
+    }
+    fieldsToUpdate.city = `'${city}'`;
+    if (!address) {
+      return res.json({ message: "الرجاء أختيار عنوان" });
+    }
+    fieldsToUpdate.address = `'${address}'`;
+    if (!phonenumber) {
+      return res.json({ message: "الرجاء أدخال رقم الهاتف" });
+    }
+    fieldsToUpdate.phonenumber = `${phonenumber}`;
+    if (!category) {
+      return res.json("الرجاء أختيار تصنيف الخدمة");
+    }
+    fieldsToUpdate.category = `'${category}'`;
+    fieldsToUpdate.userid = `${userid}`;
     const result = await serviceDao.CreateUserSer(fieldsToUpdate, userid);
+
     res.json(result);
   }
   static async addReview(req, res) {

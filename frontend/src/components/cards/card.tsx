@@ -22,7 +22,11 @@ export default function Card(props: any) {
       <div className="containerCard">
         <div className="cadre">
           <img
-            src="../../assets/random people/pexels-italo-melo-2379004.jpg"
+            src={
+              props.user.profileimg
+                ? props.user.profileimg
+                : "https://img.icons8.com/bubbles/100/000000/user.png"
+            }
             alt="profileimg"></img>
           <h4>
             {props.user.firstname} {props.user.lastname}

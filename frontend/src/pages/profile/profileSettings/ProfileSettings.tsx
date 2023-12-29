@@ -4,7 +4,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../../redux/actions/authActions";
 export default function ProfileSettings() {
-  let user = useSelector((state: any) => state.auth.user);
+  const user = useSelector((state: any) => state.auth.user);
   const dispatch = useDispatch();
   const [profile, setProfile] = useState({
     id: user.userid,
@@ -36,8 +36,8 @@ export default function ProfileSettings() {
         "http://localhost:8000/api/user/update",
         formData
       );
+      console.log(response.data);
       if (response.status === 200 && response.data) {
-        console.log(response);
         dispatch(updateUser(response.data)); // Dispatch the action with the plain object.
       } else {
         // Handle non-200 status or missing data response as needed.

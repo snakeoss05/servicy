@@ -2,23 +2,22 @@ import "../login/login.scss";
 import React, { useState, useRef } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
+import axios from "axios";
 export default function Signup1() {
   const form = useRef(null);
   const formData = useFormik({
     initialValues: {
-      name: "",
+      firstname: "",
       email: "",
       lastname: "",
-      address: "",
-      phonenumber: "",
       password: "",
     },
     onSubmit: async (values) => {
-      console.log(values);
+      const res = axios.post("http://localhost:8000/api/user/register", values);
+      console.log(res);
     },
     validationSchema: Yup.object().shape({
-      name: Yup.string()
+      firstname: Yup.string()
         .required("مطلوب أدخال أسم")
         .min(3, "قصير")
         .max(50, "Too Long!"),
@@ -32,10 +31,6 @@ export default function Signup1() {
       password: Yup.string()
         .required("مطلوب أدخال كلمةالمرور ")
         .min(8, "كلمة السر قصيرة"),
-      phonenumber: Yup.string()
-        .required("رجاء أدخال رقم الهاتف")
-        .min(8, "الرقم غير صالح أو غير كامل"),
-      address: Yup.string().required("مطلوب أدخال العنوان"),
     }),
   });
 
@@ -51,10 +46,10 @@ export default function Signup1() {
             type="text"
             placeholder="الأسم"
             className="form-field animation a3"
-            {...formData.getFieldProps("name")}
+            {...formData.getFieldProps("firstname")}
           />
-          {formData.errors.name && formData.touched.name ? (
-            <span>{formData.errors.name}</span>
+          {formData.errors.firstname && formData.touched.firstname ? (
+            <span>{formData.errors.firstname}</span>
           ) : null}
           <input
             type="text"
@@ -84,7 +79,7 @@ export default function Signup1() {
             <span>{formData.errors.password}</span>
           ) : null}
 
-          <button className="animation a6" disabled={!formData.isValid}>
+          <button className="animation a6" type="submit">
             تسجيل
           </button>
         </form>

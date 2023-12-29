@@ -6,10 +6,10 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../uploads"); // Destination folder to store uploaded images
+    cb(null, "uploads"); // Destination folder to store uploaded images
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename for the image
   },
 });
 
@@ -22,6 +22,7 @@ router.post(
   upload.single("image1"),
   serviceController.CreateService
 );
+router.get("/fullinfo", serviceController.getServiceFullInfo);
 router.post("/addreview", serviceController.addReview);
 router.get("/filter", serviceController.getUsersServiceFilter);
 router.get(

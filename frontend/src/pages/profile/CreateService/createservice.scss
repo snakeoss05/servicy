@@ -11,9 +11,202 @@ $white: rgba(255, 255, 255);
 #createService {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  align-items: center;
   padding: 20px;
   h4 {
     margin: 0 auto;
     font-size: 26px;
+  }
+
+  .step1 {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    .gridcontainer {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      max-width: 70%;
+
+      gap: 10px;
+      padding: 20px;
+      justify-content: end;
+
+      .groupField {
+        display: flex;
+        flex-direction: column;
+        text-align: end;
+        width: 45%;
+
+        label {
+          font-size: 16px;
+          margin: 10px 0;
+        }
+        input {
+          font-size: larger;
+          text-align: end;
+          padding: 8px;
+          background-color: $white;
+          border: solid 1px $grey2;
+          outline: none;
+          border-radius: 8px;
+        }
+        .customSelect {
+          position: relative;
+          border-radius: 10px;
+          margin-left: auto;
+          padding: 0 10px;
+          width: 300px;
+
+          &:hover ul,
+          &:active ul {
+            display: block;
+          }
+          &:hover p::after,
+          &:active p::after {
+            transform: rotate(180deg);
+          }
+
+          p {
+            display: block;
+            text-transform: capitalize;
+            align-items: center;
+            border-radius: 6px;
+            background-color: transparent;
+            color: #adadad;
+            border: solid 1px rgb(203 213 224 / 1);
+            text-align: left;
+            position: relative;
+            background-color: $white;
+            width: 100%;
+            font-weight: 500;
+            padding: 13px 0px 12px 9px;
+            height: 20px;
+            &::after {
+              content: "▲";
+              position: absolute;
+              right: 15px;
+              transition: transform ease-in 0.3s;
+              font-size: 10px;
+              top: 30%;
+              transform: rotate(90deg);
+              display: block;
+            }
+          }
+
+          ul {
+            display: none;
+            position: absolute;
+            overflow-y: auto;
+            max-height: 390px;
+            top: 100%;
+            margin-left: 2px;
+            z-index: 10;
+            padding: 0 10px;
+            text-align: left;
+            list-style: none;
+            width: 94%;
+            background-color: DodgerBlue;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+              rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+            color: #ffffff;
+            padding: 4px 3px;
+            border: 1px solid transparent;
+
+            cursor: pointer;
+
+            li {
+              margin: 4px 0;
+              text-transform: capitalize;
+              padding: 8px 16px;
+              font-weight: 400;
+
+              border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+              &:hover {
+                background-color: $white;
+                color: $black;
+              }
+            }
+          }
+        }
+      }
+      .phonenumber {
+        @extend .groupField;
+
+        input {
+          width: 290px;
+          margin-left: auto;
+        }
+      }
+    }
+    .nextprevbtn {
+      display: flex;
+      flex-direction: row;
+      padding: 0 20px;
+      width: 70%;
+      justify-content: space-between;
+      .prev {
+        transition: background-color ease-in-out 0.3s;
+        &:hover {
+          background: $blue1;
+          color: $white;
+        }
+      }
+      button {
+        padding: 6px 10px;
+        background-color: $black;
+        color: $white;
+        font-size: 20px;
+        border: solid 1px $black;
+        border-radius: 8px;
+      }
+    }
+  }
+  .step2 {
+    @extend .step1;
+    .imgplace {
+      width: 300px;
+      height: 300px;
+      border-radius: 15px;
+      margin: 15px 0;
+      background-color: #dbdbdb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      i {
+        font-size: 40px;
+        color: #adadad;
+      }
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .custom-file-upload {
+      border: 1px solid $black;
+      display: inline-block;
+      color: $black;
+      margin: 10px 0;
+      text-wrap: nowrap;
+      padding: 8px 12px;
+
+      cursor: pointer;
+      i {
+        margin-left: 15px;
+        transition: transform ease-in 0.3s;
+      }
+      &:hover {
+        color: $white;
+        background-color: #060606;
+      }
+      &:hover i {
+        transform: translateX(-5px);
+      }
+    }
   }
 }

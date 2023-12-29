@@ -22,7 +22,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 99;
-  padding: 3em;
+  padding: 2em;
   height: 60px;
   .logo {
     z-index: 4;
@@ -272,6 +272,9 @@ header {
       height: 4em;
       row-gap: 0;
       line-height: 1em;
+      &:hover {
+        color: #0b69db !important;
+      }
     }
 
     .menu-item .icon-box .text i {

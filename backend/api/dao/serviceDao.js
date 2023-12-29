@@ -1,26 +1,25 @@
 import db from "../config/db.js";
 export default class serviceDao {
-  static async CreateUserSer(fieldsToUpdate, userid) {
+  static async CreateUserSer(fieldsToUpdate) {
     try {
       const query = `
     INSERT INTO services(${Object.keys(fieldsToUpdate)})
-    VALUES(${Object.values(fieldsToUpdate)})
-    WHERE userid = ${userid};
+    VALUES(${Object.values(fieldsToUpdate)});
+    
   `;
-      console.log(fieldsToUpdate);
-      console.log(query);
+
       await db.query(query);
       return {
         success: true,
         message: "Your Service Have Been Posted Successfuly",
       };
     } catch (error) {
-      return { success: false, message: "You can only add one service" };
+      return { fail: error, message: "You can only add one service" };
     }
   }
   static async getUsersByServiceCategory(category) {
     return await db.query(
-      "SELECT services.phonenumber,services.avg_rating,users.firstname,users.lastname,services.userid FROM services JOIN users ON services.userid=users.userid WHERE services.category = $1",
+      "SELECT services.phonenumber,services.avg_rating,users.firstname,users.lastname,services.userid,users.profileimg FROM services JOIN users ON services.userid=users.userid WHERE services.category = $1",
       [category]
     );
   }

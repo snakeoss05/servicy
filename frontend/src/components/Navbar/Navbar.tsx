@@ -93,7 +93,9 @@ export default function Navbar() {
                 <i className="fa-solid fa-house"></i>
               </div>
               <div className="text">
-                <div className="title">كراء</div>
+                <div className="title">
+                  <Link to="/services/loyer">كراء</Link>
+                </div>
               </div>
             </div>
             <div className="icon-box  ">
@@ -181,11 +183,11 @@ export default function Navbar() {
             </Link>
             <Link to="/profile">
               {" "}
-              {user.picture ? (
+              {user.profileimg ? (
                 <img
                   src={
                     user.profileimg
-                      ? user.picture
+                      ? user.profileimg
                       : "https://img.icons8.com/bubbles/100/000000/user.png"
                   }
                   alt="profileimg"

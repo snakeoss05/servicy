@@ -18,7 +18,7 @@ export default function Profile() {
           <img
             src={
               user.profileimg
-                ? user.picture
+                ? user.profileimg
                 : "https://img.icons8.com/bubbles/100/000000/user.png"
             }
             className="img-radius"

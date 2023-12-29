@@ -8,6 +8,7 @@ import StarRating from "../../components/StarRatings";
 import Card from "../../components/cards/card";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import categorysList from "../../data/categorys";
 interface users {
   userid: string;
   phonenumber: number;
@@ -15,6 +16,7 @@ interface users {
   avg_rating: number;
   firstname: string;
   lastname: string;
+  profileimg: string;
 }
 
 export default function Services() {
@@ -48,7 +50,7 @@ export default function Services() {
 `
       )
       .then((response) => {
-        console.log(response);
+        setUsers(response.data);
       });
   };
 
@@ -167,17 +169,11 @@ export default function Services() {
               <div className="customSelect">
                 <p>{jobtype}</p>
                 <ul>
-                  <li onClick={() => setjobtype("electricien")}>electricien</li>
-                  <li onClick={() => setjobtype("plombier")}>plombier</li>
-                  <li onClick={() => setjobtype("technicien informatique")}>
-                    technicien de informatique
-                  </li>
-                  <li onClick={() => setjobtype("technicien maintenance")}>
-                    technicien de maintenance
-                  </li>
-                  <li onClick={() => setjobtype("technicien chaud froid")}>
-                    technicien chaud froid
-                  </li>
+                  {categorysList["technicien"].map((value, index) => (
+                    <li key={index} onClick={() => setjobtype(value)}>
+                      {value}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
