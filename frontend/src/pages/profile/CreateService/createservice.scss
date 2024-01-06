@@ -24,42 +24,51 @@ $white: rgba(255, 255, 255);
     width: 100%;
     flex-direction: column;
     align-items: center;
+
     .gridcontainer {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      max-width: 70%;
-
       gap: 10px;
       padding: 20px;
-      justify-content: end;
+      text-align: end;
+      width: 60%;
+      justify-content: space-evenly;
+      align-items: flex-end;
 
       .groupField {
         display: flex;
         flex-direction: column;
-        text-align: end;
-        width: 45%;
+
+        width: 40%;
 
         label {
+          display: block;
+          text-align: end;
+          width: 100%;
           font-size: 16px;
           margin: 10px 0;
         }
         input {
           font-size: larger;
           text-align: end;
-          padding: 8px;
+          width: 100%;
+          padding: 10px;
           background-color: $white;
           border: solid 1px $grey2;
           outline: none;
           border-radius: 8px;
         }
         .customSelect {
+          display: block;
           position: relative;
           border-radius: 10px;
-          margin-left: auto;
+          background-color: $white;
+          text-align: end;
           padding: 0 10px;
-          width: 300px;
-
+          border: solid 1px rgb(203 213 224 / 1);
+          width: 100%;
+          text-align: left;
           &:hover ul,
           &:active ul {
             display: block;
@@ -68,7 +77,6 @@ $white: rgba(255, 255, 255);
           &:active p::after {
             transform: rotate(180deg);
           }
-
           p {
             display: block;
             text-transform: capitalize;
@@ -76,10 +84,7 @@ $white: rgba(255, 255, 255);
             border-radius: 6px;
             background-color: transparent;
             color: #adadad;
-            border: solid 1px rgb(203 213 224 / 1);
-            text-align: left;
             position: relative;
-            background-color: $white;
             width: 100%;
             font-weight: 500;
             padding: 13px 0px 12px 9px;
@@ -102,9 +107,9 @@ $white: rgba(255, 255, 255);
             overflow-y: auto;
             max-height: 390px;
             top: 100%;
-            margin-left: 2px;
+            left: 5px;
+
             z-index: 10;
-            padding: 0 10px;
             text-align: left;
             list-style: none;
             width: 94%;
@@ -114,7 +119,6 @@ $white: rgba(255, 255, 255);
             color: #ffffff;
             padding: 4px 3px;
             border: 1px solid transparent;
-
             cursor: pointer;
 
             li {
@@ -132,21 +136,13 @@ $white: rgba(255, 255, 255);
           }
         }
       }
-      .phonenumber {
-        @extend .groupField;
-
-        input {
-          width: 290px;
-          margin-left: auto;
-        }
-      }
     }
     .nextprevbtn {
       display: flex;
-      flex-direction: row;
-      padding: 0 20px;
-      width: 70%;
-      justify-content: space-between;
+      width: 40%;
+      gap: 20px;
+      flex-direction: row !important;
+
       .prev {
         transition: background-color ease-in-out 0.3s;
         &:hover {
@@ -155,17 +151,26 @@ $white: rgba(255, 255, 255);
         }
       }
       button {
-        padding: 6px 10px;
+        margin-top: auto;
+        font-size: larger;
+        width: 100%;
+
+        padding: 8px 20px;
         background-color: $black;
         color: $white;
         font-size: 20px;
-        border: solid 1px $black;
+        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+        border: none;
         border-radius: 8px;
       }
     }
   }
   .step2 {
     @extend .step1;
+    .title {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
     .imgplace {
       width: 300px;
       height: 300px;
@@ -174,7 +179,9 @@ $white: rgba(255, 255, 255);
       background-color: #dbdbdb;
       display: flex;
       align-items: center;
+      object-fit: contain;
       justify-content: center;
+
       i {
         font-size: 40px;
         color: #adadad;
@@ -187,26 +194,66 @@ $white: rgba(255, 255, 255);
     input[type="file"] {
       display: none;
     }
-    .custom-file-upload {
-      border: 1px solid $black;
-      display: inline-block;
-      color: $black;
-      margin: 10px 0;
-      text-wrap: nowrap;
-      padding: 8px 12px;
+  }
+}
+@media (max-width: $layout-breakpoint-small) {
+  .step1 {
+    width: 70% !important;
+    margin-right: auto;
+    .gridcontainer {
+      display: flex;
 
-      cursor: pointer;
-      i {
-        margin-left: 15px;
-        transition: transform ease-in 0.3s;
+      flex-direction: column !important;
+      flex-wrap: wrap;
+      gap: 10px !important;
+      padding: 10px !important;
+      text-align: end;
+      width: 90% !important;
+      align-content: center !important;
+      align-items: center !important;
+
+      .groupField {
+        width: 100% !important;
+        input {
+          font-size: medium !important;
+          text-align: end;
+          width: 100%;
+          padding: 8px;
+          background-color: $white;
+          border: solid 1px $grey2;
+          outline: none;
+          border-radius: 8px;
+        }
       }
-      &:hover {
-        color: $white;
-        background-color: #060606;
+      .customSelect {
+        display: block;
+        position: relative;
+        border-radius: 10px;
+        background-color: $white;
+        text-align: end;
+        padding: 0 10px;
+        border: solid 1px rgb(203 213 224 / 1);
+        width: 100%;
+        text-align: left;
+
+        p {
+          font-size: 14px !important;
+
+          padding: 11px 0px 10px 7px !important;
+          height: 16px !important;
+        }
+
+        ul {
+          li {
+            padding: 6px 12px !important;
+          }
+        }
       }
-      &:hover i {
-        transform: translateX(-5px);
-      }
+    }
+    .nextprevbtn {
+      margin-top: 20px;
+      width: 110% !important;
+      transform: translateX(10px);
     }
   }
 }

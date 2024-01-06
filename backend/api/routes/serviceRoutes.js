@@ -22,12 +22,19 @@ router.post(
   upload.single("image1"),
   serviceController.CreateService
 );
-router.get("/fullinfo", serviceController.getServiceFullInfo);
+router.put(
+  "/update",
+  upload.single("picture"),
+  serviceController.updateService
+);
+router.get("/fullinfo/:userid", serviceController.getServiceFullInfo);
 router.post("/addreview", serviceController.addReview);
 router.get("/filter", serviceController.getUsersServiceFilter);
 router.get(
   "/getcategory/:category",
   serviceController.getUsersByServiceCategory
 );
+router.get("/notfications/:userid", serviceController.getNotfications);
+router.delete("/notfications/delete", serviceController.deleteNotification);
 
 export default router;

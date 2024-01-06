@@ -2,51 +2,103 @@ import React, { useState, useEffect } from "react";
 import "./profileinfo.scss";
 import { useSelector } from "react-redux";
 import StarRating from "../../components/StarRatings";
+import axios from "axios";
 
-export default function Profileinfo() {
+export default function Profileinfo(props: any) {
+  const user = useSelector((state: RootState) => state.auth.user);
   const [rating, setRating] = useState(0);
-
+  const [reviewlist, setReviewlist] = useState();
+  const [newreview, setNewreview] = useState({
+    profileimg: user.profileimg,
+    userid: user.userid,
+    serviceid: props.users[0].serviceid,
+    ratedid: props.users[0].userid,
+    rating: 0,
+    comment: "",
+    timestamp: new Date(),
+  });
   function stars(n: number) {
     const starSymbol = String.fromCharCode(9733);
 
     return <span>{starSymbol.repeat(n)}</span>;
   }
 
+  function ConvertTime(date) {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    };
+    const dateObject = new Date(date);
+
+    const formattedDate = dateObject.toLocaleString("en-FR", options);
+    return formattedDate;
+  }
+  useEffect(() => {
+    setReviewlist(props.reviews);
+  }, [props.reviews]);
   const handleRatingChange = (newRating: number) => {
+    setNewreview((prevstate) => ({
+      ...prevstate,
+      rating: newRating,
+    }));
     setRating(newRating);
   };
   const isAuthenticated = useSelector(
     (state: any) => state.auth.isAuthenticated
   );
-  const user = useSelector((state: RootState) => state.auth.user);
 
+  const addReview = async () => {
+    try {
+      const resp = await axios.post(
+        "http://localhost:8000/api/service/addreview",
+        newreview
+      );
+      setReviewlist((oldarray) => [...oldarray, newreview]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  function HandleChange(event: any) {
+    const { name, value } = event.target;
+    setNewreview((prevFormdata) => ({
+      ...prevFormdata,
+      [name]: value,
+    }));
+  }
   return (
     <div id="profileinfo">
       <div className="profile">
         <div className="headerprofile">
           <div className="lefprofile">
             <img
-              src="https://img.icons8.com/bubbles/100/000000/user.png"
+              src={props.users[0]?.profileimg}
               className="img-radius"
               alt="User-Profile-Image"></img>
-            <p>أحمد زكري</p>
-            <span>تقني كهرباء</span>
+            <p>
+              {props.users[0]?.firstname} {props.users[0]?.lastname}
+            </p>
+            <span>{props.users[0]?.name}</span>
           </div>
           <div className="rightprofile">
             <div>
               <div className="h2">معطيات</div>
               <div>
                 <div className="h6">رقم الهاتف</div>
-                <p>24365648</p>
+                <p>{props.users[0]?.phonenumber}</p>
               </div>
               <div>
                 <div className="h6">بريد ألكتروني</div>
-                <p>ahmed.zekri@gmail.com</p>
+                <p>{props.users[0]?.email}</p>
               </div>
               <div>
                 <div className="h6">التقيم</div>
-                <div className="h1">5.0/5 </div>
-                <div className="h4">{stars(5)} </div>
+                <div className="h1">{props.users[0]?.avg_rating}/5.00</div>
+                <div className="h4">{stars(4)} </div>
               </div>
             </div>
           </div>
@@ -54,55 +106,55 @@ export default function Profileinfo() {
         <div className="examplePhoto">
           <div className="h2">مثال لبعض مشاريع</div>
           <div className="imgcontainer">
-            <img
-              src="../../assets/New folder/281ca337-000_couverture_lat04_1920x1080-1200x675.jpg"
-              alt="exp"
-            />
-            <img
-              src="../../assets/New folder/281ca337-000_couverture_lat04_1920x1080-1200x675.jpg"
-              alt="exp"
-            />
-            <img
-              src="../../assets/New folder/281ca337-000_couverture_lat04_1920x1080-1200x675.jpg"
-              alt="exp"
-            />
+            <img src={props.users[0]?.image1} alt="exp" />
           </div>
           <div className="reviews">
             <div className="h2">تقيم الخدمات</div>
             <div className="reviewcontainer">
-              <div className="review">
-                <div className="icon-profile">
-                  <img
-                    src="https://img.icons8.com/bubbles/100/000000/user.png"
-                    className="img-radius"
-                    alt="User-Profile-Image"
-                  />
-                  <p>Mourad manai</p>
-                </div>
+              {reviewlist?.map((review) => {
+                return (
+                  <div className="review">
+                    <div className="icon-profile">
+                      <img
+                        src={
+                          review.profileimg
+                            ? review.profileimg
+                            : "https://img.icons8.com/bubbles/100/000000/user.png"
+                        }
+                        className="img-radius"
+                        alt="User-Profile-Image"
+                      />
+                      <p>
+                        {review.firstname} {review.lastname}
+                      </p>
+                    </div>
 
-                <span>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint
-                  ab repellendus cum aperiam, maiores laboriosam nam esse quod
-                  corporis corrupti a fugit aliquid assumenda, sapiente beatae,
-                  voluptate iusto aut doloremque.
-                </span>
-              </div>
+                    <div className="sidechat">
+                      <span className="rating">{review.rating}/5.0</span>
+                      <span className="stars">{stars(review.rating)}</span>
+
+                      <p>{review.comment}</p>
+                      <p className="date">{ConvertTime(review.timestamp)}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
             {isAuthenticated ? (
               <div className="sendReview">
-                <button>أرسال</button>
+                <button onClick={addReview}>أرسال</button>
                 <div>
                   <StarRating
                     totalStars={5}
                     initialRating={rating}
                     onRatingChange={handleRatingChange}
                   />
-                  <input name="comment" />
+                  <input name="comment" onChange={HandleChange} />
                 </div>
 
                 <div className="icon-profile">
                   <img
-                    src="https://img.icons8.com/bubbles/100/000000/user.png"
+                    src={user.profileimg}
                     className="img-radius"
                     alt="User-Profile-Image"
                   />

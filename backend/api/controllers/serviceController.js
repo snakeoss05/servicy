@@ -42,14 +42,78 @@ export default class serviceController {
 
     res.json(result);
   }
+  static async updateService(req, res) {
+    const { userid, name, city, address, phonenumber, category } = req.body;
+    const picture = req.file;
+    let fieldsToUpdate = [];
+
+    if (name) {
+      fieldsToUpdate.push(`name = '${name}'`);
+    }
+    if (city) {
+      fieldsToUpdate.push(`city = '${city}'`);
+    }
+    if (address) {
+      fieldsToUpdate.push(`address ='${address}'`);
+    }
+    if (phonenumber) {
+      fieldsToUpdate.push(`phonenumber ='${phonenumber}'`);
+    }
+    if (category) {
+      fieldsToUpdate.push(`category ='${category}'`);
+    }
+
+    if (picture) {
+      const filePath = picture.path;
+      const img1 = filePath.replace(/\\/g, "/");
+      fieldsToUpdate.push(
+        `image1 = '${req.protocol}://${req.get("host")}/${img1}'`
+      );
+    }
+    if (fieldsToUpdate.length === 0) {
+      return res.status(400).send({ message: "No fields to update" });
+    }
+
+    const convertArrayToObject = (array) => {
+      const obj = {};
+      array.forEach((item) => {
+        const [key, value] = item.split(" = ");
+
+        obj[key] = value?.replace(/^'(.+)'$/, "$1");
+      });
+      return obj;
+    };
+    try {
+      await serviceController.updateService(fieldsToUpdate, userid);
+      const updatedValues = convertArrayToObject(fieldsToUpdate);
+
+      return res.status(200).json(updatedValues);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Internal server error.");
+    }
+  }
   static async addReview(req, res) {
-    const { userid, serviceid, rating, comment } = req.body;
+    const { userid, serviceid, rating, comment, ratedid } = req.body;
+
     const result = await serviceDao.addReview(
       userid,
       serviceid,
       rating,
-      comment
+      comment,
+      ratedid
     );
+    const results2 = await serviceDao.getRaterid(userid);
+
+    const notification = {
+      notificationid: Date.now() + serviceid,
+      firstname: results2[0].firstname,
+      lastname: results2[0].lastname,
+      profileimg: results2[0].profileimg,
+      created_at: new Date(),
+      message: comment,
+    };
+    serviceDao.sendNotificationToUser(ratedid, notification);
     res.json(result.message);
   }
   static async getServiceById(req, res) {
@@ -64,8 +128,9 @@ export default class serviceController {
     res.status(200).json(result.rows);
   }
   static async getUsersServiceFilter(req, res) {
-    const { name, city, address, rating } = req.query;
+    const { category, name, city, address, rating } = req.query;
     const result = await serviceDao.getUsersServiceFilter(
+      category,
       name,
       city,
       address,
@@ -75,7 +140,7 @@ export default class serviceController {
   }
 
   static async getServiceFullInfo(req, res) {
-    const { userid } = req.body;
+    const { userid } = req.params;
     const result = await serviceDao.getServiceFullInfo(userid);
     res.status(200).json(result.rows);
   }
@@ -83,5 +148,33 @@ export default class serviceController {
     const { id } = req.params;
     const result = await serviceDao.getReviewsForService(id);
     res.json(result.rows);
+  }
+  static async getNotfications(req, res) {
+    const { userid } = req.params;
+
+    const results = await serviceDao.getNotifications(userid);
+    res.json(results);
+  }
+  static async deleteNotification(req, res) {
+    const { notificationid, userid } = req.query;
+
+    try {
+      const result = await serviceDao.deleteNotifications(
+        notificationid,
+        userid
+      );
+
+      if (result) {
+        res.json({ message: "Notification deleted", success: true });
+      } else {
+        res.status(404).json({
+          message: "Notification not found or user mismatch",
+          success: false,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Server error");
+    }
   }
 }

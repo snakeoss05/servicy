@@ -12,6 +12,10 @@ $white: rgba(255, 255, 255);
   display: flex;
   flex-direction: column;
   padding: 20px;
+  .row {
+    display: flex;
+    flex-direction: row;
+  }
   h4 {
     margin: 0 auto;
     font-size: 26px;
@@ -36,8 +40,25 @@ $white: rgba(255, 255, 255);
         color: $white;
         background-color: #060606;
       }
+      i {
+        margin-left: 8px;
+      }
     }
-
+    p {
+      width: fit-content;
+      padding: 8px;
+      margin: 5px auto;
+      color: orangered;
+      animation: FadeUp 0.3s ease-in-out;
+    }
+    @keyframes FadeUp {
+      from {
+        opacity: 0%;
+      }
+      to {
+        opacity: 100%;
+      }
+    }
     .displayGrid {
       display: flex;
       flex-direction: column;
@@ -52,13 +73,15 @@ $white: rgba(255, 255, 255);
         color: $white;
         font-size: 18px;
         margin-top: 15px;
-
+        border: none;
         font-weight: 500;
         letter-spacing: 1px;
-        transition: transform ease-in 0.3s;
+
         padding: 8px;
+        transition: background-color ease-in-out 0.3s;
         &:hover {
-          transform: scale(0.98);
+          background: $blue1;
+          color: $white;
         }
       }
       .groupField {
@@ -75,6 +98,67 @@ $white: rgba(255, 255, 255);
         }
         input {
           font-size: larger;
+          text-align: end;
+          padding: 8px;
+          background-color: $white;
+          border: solid 1px $grey2;
+          outline: none;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+}
+@media (max-width: $layout-breakpoint-small) {
+  #profileSettings {
+    flex-direction: column;
+    h4 {
+      margin: 0 auto;
+      font-size: 20px;
+    }
+    .row {
+      display: flex;
+      flex-direction: column !important;
+    }
+    .displayGrid {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      div {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      button {
+        background-color: $black;
+        color: $white;
+        font-size: 18px;
+        margin-top: 15px;
+        border: none;
+        font-weight: 500;
+        letter-spacing: 1px;
+
+        padding: 8px;
+        transition: background-color ease-in-out 0.3s;
+        &:hover {
+          background: $blue1;
+          color: $white;
+        }
+      }
+      .groupField {
+        display: flex;
+        flex-direction: column;
+        text-align: end;
+        width: 100%;
+        margin-bottom: 8px;
+        margin-left: auto;
+
+        label {
+          font-size: 16px;
+          margin: 6px 0;
+        }
+        input {
+          font-size: medium;
           text-align: end;
           padding: 8px;
           background-color: $white;

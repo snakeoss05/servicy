@@ -17,7 +17,7 @@ export default class UserController {
         hashedPassword
       );
 
-      return res.status(200).json(result.message);
+      return res.status(200).json(result);
     } catch (error) {
       res.status(500).send("Internal server error.");
     }

@@ -3,6 +3,7 @@ import "./Navbar.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/actions/authActions";
+import Notifications from "../notifications/Notifications";
 export default function Navbar() {
   const [toggle, settoggle] = useState(false);
   const [navbarBg, setNavbarBg] = useState("#060606");
@@ -93,9 +94,9 @@ export default function Navbar() {
                 <i className="fa-solid fa-house"></i>
               </div>
               <div className="text">
-                <div className="title">
-                  <Link to="/services/loyer">كراء</Link>
-                </div>
+                <Link to="/services/loyer">
+                  <div className="title">كراء</div>
+                </Link>
               </div>
             </div>
             <div className="icon-box  ">
@@ -176,12 +177,13 @@ export default function Navbar() {
       <div className="rightNav">
         {isAuthenticated ? (
           <>
-            <Link to="/login">
+            <Link to="/login" className="list">
               <i
                 className="fa-solid fa-person-walking-arrow-right"
                 onClick={singout}></i>
             </Link>
-            <Link to="/profile">
+
+            <Link to="/profile" className="list">
               {" "}
               {user.profileimg ? (
                 <img
@@ -194,9 +196,12 @@ export default function Navbar() {
                   className="profielimg"
                 />
               ) : (
-                <i className="fa-regular fa-user"></i>
+                <i className="fa-regular fa-user list" />
               )}
             </Link>
+            <a href="#" className="list">
+              <Notifications />
+            </a>
           </>
         ) : (
           <>

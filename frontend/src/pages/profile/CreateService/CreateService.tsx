@@ -17,6 +17,11 @@ export default function CreateService() {
     phonenumber: "",
     image1: "",
   });
+  const [alert, setalert] = useState({
+    message: "",
+    fail: false,
+    display: false,
+  });
   const [image, setImage] = useState(null);
   const uniquecities = [...new Set(jsonData.map((obj: any) => obj.admin_name))];
   const listofGov = jsonData.filter((obj) => obj.admin_name === service.city);
@@ -40,7 +45,6 @@ export default function CreateService() {
     }
   };
 
-  console.log(formData(service.category));
   function HandleChange(event: any) {
     const { name, value } = event.target;
     setService((prevFormdata) => ({
@@ -70,15 +74,36 @@ export default function CreateService() {
       formData.append("image1", service.image1);
       formData.append("city", service.city);
       formData.append("phonenumber", service.phonenumber);
-      console.log(formData);
+
       const response = await axios.post(
         "http://localhost:8000/api/service/create",
         formData
       );
+      setalert((state) => ({
+        ...state,
+        message: response.data.message,
+        display: true,
+      }));
+      const alertOff = setTimeout(() => {
+        setalert((state) => ({
+          ...state,
 
-      console.log(response);
+          display: false,
+        }));
+      }, 2000);
+
+      return () => {
+        clearTimeout(alertOff);
+      };
     } catch (error) {
       console.error("Error uploading file:", error);
+      /*  setalert((state) => ({
+        ...state,
+        message: error.message,
+        fail: true,
+        display: true,
+      }));*/
+      console.log(error);
     }
   };
   const renderForm = () => {
@@ -86,6 +111,7 @@ export default function CreateService() {
       case 1:
         return (
           <div className="step1">
+            <h4>أنشاء خدمات</h4>
             <div className="gridcontainer">
               <div className="groupField">
                 <label htmlFor="firstname">أسم الخدمة</label>
@@ -159,7 +185,7 @@ export default function CreateService() {
                 </div>
               </div>
 
-              <div className="phonenumber">
+              <div className="groupField full-width">
                 <label htmlFor="phonenumber">رقم الهاتف</label>
                 <input
                   type="text"
@@ -180,6 +206,7 @@ export default function CreateService() {
       case 2:
         return (
           <div className="step2">
+            <div className="title">حمل صور لبعض مشاريع سابقة</div>
             <div className="imgplace">
               {image ? (
                 <img src={image} alt="serviceImg" />
@@ -190,9 +217,15 @@ export default function CreateService() {
 
             <label className="custom-file-upload">
               <input type="file" name="image1" onChange={handleFileChange} />
-              حمل صور لبعض مشاريع سابقة
-              <i className="fa-solid fa-arrow-left"></i>
+              تحميل
+              <i className="fa-solid fa-cloud-arrow-up"></i>
+              <p>يجب ألا يتجاوز حجم الملف 2 مياجا</p>
             </label>
+            {alert.display && (
+              <span style={{ color: alert.fail ? "green" : "orangered" }}>
+                {alert.message}
+              </span>
+            )}
             <div className="nextprevbtn">
               <button onClick={CreateService} className="prev">
                 تأكيد
@@ -209,10 +242,5 @@ export default function CreateService() {
     }
   };
 
-  return (
-    <div id="createService">
-      <h4>أنشاء خدمات</h4>
-      {renderForm()}
-    </div>
-  );
+  return <div id="createService">{renderForm()}</div>;
 }

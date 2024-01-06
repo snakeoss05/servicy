@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import Cookies from "js-cookie";
 
 interface UserData {
   user: object;
   token: string;
 }
-import Cookies from "js-cookie";
+
 const initialState = {
   isAuthenticated: false,
   user: JSON.parse(localStorage.getItem("user") || "{}") as UserData,

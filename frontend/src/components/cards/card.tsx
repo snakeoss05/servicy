@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import Modal from "../ModalBox/ModalBox";
 import Profileinfo from "../../pages/profileInformation/profileinfo";
+import axios from "axios";
+import Loading from "../loading/Loading";
 
 export default function Card(props: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => {
+  const [fullInfo, setfullInfo] = useState();
+  const [reviews, setReviews] = useState();
+  const openModal = async () => {
     setIsModalOpen(true);
+    fetchItems();
+    fetchReviews();
   };
 
   const closeModal = () => {
@@ -14,9 +20,31 @@ export default function Card(props: any) {
   function stars(n: number) {
     const numberofStars = Math.ceil(n);
     const starSymbol = String.fromCharCode(9733);
-    console.log(n, numberofStars);
+
     return <span>{starSymbol.repeat(numberofStars)}</span>;
   }
+  const fetchItems = async () => {
+    try {
+      const resp = await axios.get(
+        `http://localhost:8000/api/service/fullinfo/${props.user.userid}`
+      );
+
+      setfullInfo(resp.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchReviews = async () => {
+    try {
+      const resp = await axios.get(
+        `http://localhost:8000/api/service/reviews/${props.user.serviceid}`
+      );
+
+      setReviews(resp.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div>
       <div className="containerCard">
@@ -49,7 +77,11 @@ export default function Card(props: any) {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <Profileinfo />
+        {fullInfo ? (
+          <Profileinfo users={fullInfo} reviews={reviews} />
+        ) : (
+          <Loading />
+        )}
       </Modal>
     </div>
   );

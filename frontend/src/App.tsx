@@ -6,7 +6,6 @@ import { Route, Routes } from "react-router-dom";
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
-
 import Login from "./components/login/Login";
 import Footer from "./pages/footer/Footer";
 import Signup1 from "./components/signUp1/signup1";

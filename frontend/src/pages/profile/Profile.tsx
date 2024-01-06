@@ -35,14 +35,15 @@ export default function Profile() {
             <a>تعديل المعطيات الشخصية </a>
             <i className="fa-regular fa-user"></i>
           </li>
+
+          <li onClick={() => setTabs("provideService")}>
+            <a>تقديم خدمة</a>
+            <i className="fa-solid fa-briefcase"></i>
+          </li>
           <li>
             {" "}
             <a>تعديل الخدمات </a>
             <i className="fa-regular fa-address-card"></i>
-          </li>
-          <li onClick={() => setTabs("provideService")}>
-            <a>تقديم خدمة</a>
-            <i className="fa-solid fa-briefcase"></i>
           </li>
           <li>
             <a>التقيم</a>

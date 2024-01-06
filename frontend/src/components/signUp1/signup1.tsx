@@ -5,6 +5,8 @@ import { useFormik } from "formik";
 import axios from "axios";
 export default function Signup1() {
   const form = useRef(null);
+  const [alertSuccesmsg, setalertSuccesmsg] = useState("");
+  const [alertfailmsg, setalertfailmsg] = useState("");
   const formData = useFormik({
     initialValues: {
       firstname: "",
@@ -13,8 +15,17 @@ export default function Signup1() {
       password: "",
     },
     onSubmit: async (values) => {
-      const res = axios.post("http://localhost:8000/api/user/register", values);
-      console.log(res);
+      try {
+        const res = await axios.post(
+          "http://localhost:8000/api/user/register",
+          values
+        );
+        console.log(res);
+
+        setalertSuccesmsg(res.data.message);
+      } catch (error: any) {
+        setalertfailmsg(error.message);
+      }
     },
     validationSchema: Yup.object().shape({
       firstname: Yup.string()
@@ -78,7 +89,8 @@ export default function Signup1() {
           {formData.errors.password && formData.touched.password ? (
             <span>{formData.errors.password}</span>
           ) : null}
-
+          {alertSuccesmsg && <p className="alertsucess">{alertSuccesmsg}</p>}
+          {alertfailmsg && <p className="alertfail">{alertfailmsg}</p>}
           <button className="animation a6" type="submit">
             تسجيل
           </button>

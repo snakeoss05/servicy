@@ -35,7 +35,7 @@ export default function Login() {
       const timeoutId = setTimeout(() => {
         setVerificationMessage("");
       }, 3000);
-      console.log(error);
+
       return () => {
         clearTimeout(timeoutId);
       };

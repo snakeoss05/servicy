@@ -46,7 +46,7 @@ export default function Services() {
   const FilterUsers = async () => {
     axios
       .get(
-        `http://localhost:8000/api/service/filter?city=${selectedCity}&address=${selectedGov}&name=${jobtype}&rating=${rating}
+        `http://localhost:8000/api/service/filter?category=${category}&city=${selectedCity}&address=${selectedGov}&name=${jobtype}&rating=${rating}
 `
       )
       .then((response) => {
