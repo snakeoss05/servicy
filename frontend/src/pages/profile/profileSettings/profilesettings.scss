@@ -100,10 +100,13 @@ $white: rgba(255, 255, 255);
           font-size: larger;
           text-align: end;
           padding: 8px;
-          background-color: $white;
+          background-color: #d9d9d971;
           border: solid 1px $grey2;
           outline: none;
           border-radius: 8px;
+          &:focus {
+            background-color: white;
+          }
         }
       }
     }

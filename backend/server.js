@@ -15,6 +15,12 @@ const server = createServer(app);
 const PORT = process.env.PORT || 3000;
 
 initSocket(server);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
 app.use("/uploads", express.static("uploads"));
 app.use(bodyParser.json());
 app.use("/api/service", serviceRoutes);

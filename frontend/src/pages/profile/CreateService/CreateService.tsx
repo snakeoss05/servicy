@@ -114,13 +114,6 @@ export default function CreateService() {
             <h4>أنشاء خدمات</h4>
             <div className="gridcontainer">
               <div className="groupField">
-                <label htmlFor="firstname">أسم الخدمة</label>
-                <div className="customSelect">
-                  <p>{service.name ? service.name : "nom de service"} </p>
-                  <ul>{formData(service.category)}</ul>
-                </div>
-              </div>
-              <div className="groupField">
                 <label htmlFor="firstname">تصنيف الخدمة</label>
                 <div className="customSelect">
                   <p>{service.category ? service.category : "Categorys"} </p>
@@ -142,7 +135,32 @@ export default function CreateService() {
                   </ul>
                 </div>
               </div>
-
+              <div className="groupField">
+                <label htmlFor="firstname">أسم الخدمة</label>
+                <div className="customSelect">
+                  <p>{service.name ? service.name : "nom de service"} </p>
+                  <ul>{formData(service.category)}</ul>
+                </div>
+              </div>
+              <div className="groupField">
+                <label htmlFor="ville">الولاية</label>
+                <div className="customSelect">
+                  <p>{service.city ? service.city : "tunis"}</p>
+                  <ul>
+                    {uniquecities.map((city, index) => {
+                      return (
+                        <li
+                          key={index}
+                          onClick={() => {
+                            setService((state) => ({ ...state, city: city }));
+                          }}>
+                          {city}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
               <div className="groupField">
                 <label htmlFor="firstname">المعتمدية</label>
                 <div className="customSelect">
@@ -165,27 +183,7 @@ export default function CreateService() {
                   </ul>
                 </div>
               </div>
-              <div className="groupField">
-                <label htmlFor="ville">الولاية</label>
-                <div className="customSelect">
-                  <p>{service.city ? service.city : "tunis"}</p>
-                  <ul>
-                    {uniquecities.map((city, index) => {
-                      return (
-                        <li
-                          key={index}
-                          onClick={() => {
-                            setService((state) => ({ ...state, city: city }));
-                          }}>
-                          {city}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="groupField full-width">
+              <div className="groupField ">
                 <label htmlFor="phonenumber">رقم الهاتف</label>
                 <input
                   type="text"
@@ -194,11 +192,11 @@ export default function CreateService() {
                   placeholder="رقم الهاتف"
                 />
               </div>
-            </div>
-            <div className="nextprevbtn">
-              <button onClick={() => setaction(2)} className="prev">
-                التالي
-              </button>
+              <div className="nextprevbtn">
+                <button onClick={() => setaction(2)} className="prev">
+                  التالي
+                </button>
+              </div>
             </div>
           </div>
         );
@@ -222,7 +220,7 @@ export default function CreateService() {
               <p>يجب ألا يتجاوز حجم الملف 2 مياجا</p>
             </label>
             {alert.display && (
-              <span style={{ color: alert.fail ? "green" : "orangered" }}>
+              <span style={{ color: alert.fail ? "orangered" : "green" }}>
                 {alert.message}
               </span>
             )}

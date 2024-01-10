@@ -29,12 +29,34 @@ export default class serviceDao {
   }
   static async getUsersByServiceCategory(category) {
     return await db.query(
-      "SELECT  services.serviceid,services.phonenumber,services.avg_rating,users.firstname,users.lastname,services.userid,users.profileimg FROM services JOIN users ON services.userid=users.userid WHERE services.category = $1",
+      "SELECT services.*,users.firstname,users.lastname,users.profileimg FROM services JOIN users ON services.userid=users.userid WHERE services.category = $1 ",
+
       [category]
     );
   }
+
   static async getUsersServiceFilter(category, name, city, address, rating) {
-    let sql = `SELECT services.serviceid,services.phonenumber,services.avg_rating,users.firstname,users.lastname,services.userid,users.profileimg FROM services JOIN users ON services.userid=users.userid WHERE category='${category}'`;
+    let sql = `SELECT services.*,users.firstname,users.lastname,services.userid,services.rating_count,users.profileimg FROM services JOIN users ON services.userid=users.userid WHERE services.category='${category}'`;
+
+    if (city) {
+      sql += `AND services.city = '${city}'`;
+    }
+    if (address) {
+      sql += `AND services.address = '${address}'`;
+    }
+
+    if (name) {
+      sql += `AND services.name = '${name}'`;
+    }
+
+    if (rating) {
+      sql += `AND services.avg_rating >= ${rating}`;
+    }
+
+    return await db.query(sql);
+  }
+  static async getUsersTopService(category, name, city, address, rating) {
+    let sql = `SELECT services.*,users.firstname,users.lastname,services.userid,users.profileimg FROM services JOIN users ON services.userid=users.userid WHERE category='${category} AND services.rating > 4`;
 
     if (city) {
       sql += `AND services.city = '${city}'`;
@@ -53,18 +75,7 @@ export default class serviceDao {
 
     return await db.query(sql);
   }
-  static async getUsersServiceByCity(name) {
-    return await db.query(
-      "SELECT services.phonenumber,services.avg_rating,users.firstname,users.lastname,services.userid FROM services JOIN users ON services.userid=users.userid WHERE services.city = $1",
-      [name]
-    );
-  }
-  static async getUsersServiceByAdress(name) {
-    return await db.query(
-      "SELECT services.phonenumber,services.avg_rating,users.firstname,users.lastname,services.userid FROM services JOIN users ON services.userid=users.userid WHERE services.address = $1",
-      [name]
-    );
-  }
+
   static async addReview(userid, serviceid, rating, comment, ratedid) {
     try {
       await db.query(
@@ -72,7 +83,7 @@ export default class serviceDao {
         [userid, serviceid, rating, comment]
       );
       await db.query(
-        "UPDATE services SET avg_rating = (SELECT AVG(rating) FROM reviews WHERE reviews.serviceid = $1) WHERE services.serviceid = $1;",
+        "UPDATE services SET avg_rating = (SELECT AVG(rating)  FROM reviews WHERE reviews.serviceid = $1),rating_count=rating_count+1 WHERE services.serviceid = $1;",
         [serviceid]
       );
       await db.query(
@@ -90,7 +101,7 @@ export default class serviceDao {
   }
   static async getServiceFullInfo(userid) {
     return await db.query(
-      "SELECT services.*,users.firstname,users.lastname,users.email,users.profileimg FROM services JOIN users ON services.userid=users.userid WHERE services.userid = $1",
+      "SELECT services.*,users.firstname,users.lastname,users.email,users.profileimg FROM services JOIN users ON services.userid=users.userid WHERE services.serviceid = $1",
       [userid]
     );
   }
@@ -117,19 +128,41 @@ export default class serviceDao {
   }
   static async getReviewsForService(id) {
     return await db.query(
-      "SELECT users.firstname,users.lastname,users.profileimg, reviews.rating,reviews.comment, reviews.timestamp FROM reviews JOIN users ON reviews.userid = users.userid WHERE reviews.serviceid = $1",
+      "SELECT users.firstname,users.lastname,users.profileimg, reviews.* FROM reviews JOIN users ON reviews.userid = users.userid WHERE reviews.serviceid = $1",
       [id]
     );
+  }
+  static async getReviewsForServicebyId(id) {
+    const serviceid = await db.query(
+      "SELECT serviceid from services where userid=$1",
+      [id]
+    );
+    if (!serviceid) {
+      return;
+    } else {
+      return await db.query(
+        "SELECT users.firstname,users.lastname,users.profileimg,reviews.* FROM reviews JOIN users ON reviews.userid = users.userid WHERE reviews.serviceid = $1",
+        [serviceid.rows[0].serviceid]
+      );
+    }
   }
 
   static async sendNotificationToUser(userId, notification) {
     const socketId = getUserSocketId(userId);
     if (socketId) {
-      // Emit a notification to a specific socket (i.e., a specific user)
       const io = getIo();
       io.to(socketId).emit("notification", notification);
     } else {
-      console.log(`No connected socket for user ${userId}`);
+      return;
     }
+  }
+  static async addReaction(reaction, reviewid) {
+    const query = `
+    UPDATE reviews
+    SET ${Object.values(reaction)}
+    WHERE reviewid = ${reviewid};
+  `;
+
+    return await db.query(query);
   }
 }

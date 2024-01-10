@@ -3,15 +3,29 @@ import "./profile.scss";
 import ProfileSettings from "./profileSettings/ProfileSettings";
 import { useSelector } from "react-redux";
 import CreateService from "./CreateService/CreateService";
+import Rating from "./rating/Rating";
+import axios from "axios";
 export default function Profile() {
   const [tabs, setTabs] = useState("profileSettings");
+  const [reviews, setReviews] = useState([]);
   const user = useSelector((state: any) => state.auth.user);
+  const fetchReviews = async () => {
+    try {
+      const resp = await axios.get(
+        `http://localhost:8000/api/service/getbyid/${user.userid}`
+      );
 
+      setReviews(resp.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div id="profile">
       <div className="leftprofile">
         {tabs === "profileSettings" && <ProfileSettings />}
         {tabs === "provideService" && <CreateService />}
+        {tabs === "rating" && <Rating reviews={reviews} />}
       </div>
       <div className="rightprofile">
         <div>
@@ -45,7 +59,11 @@ export default function Profile() {
             <a>تعديل الخدمات </a>
             <i className="fa-regular fa-address-card"></i>
           </li>
-          <li>
+          <li
+            onClick={() => {
+              fetchReviews();
+              setTabs("rating");
+            }}>
             <a>التقيم</a>
             <i className="fa-solid fa-star-half-stroke"></i>
           </li>

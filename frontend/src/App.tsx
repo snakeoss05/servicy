@@ -11,6 +11,7 @@ import Footer from "./pages/footer/Footer";
 import Signup1 from "./components/signUp1/signup1";
 import Services from "./pages/Service/Services";
 import Profile from "./pages/profile/Profile.tsx";
+import Profileinfo from "./pages/profileInformation/profileinfo.tsx";
 
 function App() {
   const isAuthenticated = useSelector(
@@ -33,6 +34,7 @@ function App() {
           }
         />
         <Route path="/signup" element={<Signup1 />} />
+        <Route path="/profile/:serviceid" element={<Profileinfo />} />
         <Route path="/services/:category" element={<Services />} />
         <Route
           path="/profile"

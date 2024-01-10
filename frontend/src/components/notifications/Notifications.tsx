@@ -70,7 +70,7 @@ export default function Notifications() {
               (notification) => notification.notificationid !== notificationId
             )
           );
-        }, 500);
+        }, 400);
 
         return () => {
           clearTimeout(deletenotification);
@@ -123,6 +123,7 @@ export default function Notifications() {
                   </p>
 
                   <p className="message">{notfication.message}</p>
+
                   <p className="time">{ConvertTime(notfication.created_at)}</p>
                 </div>
                 <span className="bubble"></span>

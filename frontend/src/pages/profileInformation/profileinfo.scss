@@ -11,7 +11,8 @@ $gray: #929292;
 #profileinfo {
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: center;
+
   text-align: end;
 
   .profile {
@@ -22,13 +23,44 @@ $gray: #929292;
     .headerprofile {
       display: flex;
       flex-direction: column;
+
       .lefprofile {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 20;
+        box-shadow: 0px 4px 16px rgba(96, 97, 112, 0.08);
+        padding: 60px 40px !important;
+        width: 220px;
+        border-radius: 25px;
+        margin: 20px;
         text-align: center;
+        text-transform: capitalize;
+        .fa-heart {
+          margin-left: auto;
+          font-size: 18px;
+          &:hover {
+            transform: scale(1.1);
+            color: orangered;
+          }
+        }
+        .rate {
+          display: flex;
+          text-align: center;
+          align-items: baseline;
+
+          justify-content: space-evenly;
+          margin: 10px 0;
+          flex-direction: row;
+          gap: 5px;
+          img,
+          p,
+          span {
+            font-size: 15px;
+            height: 15px;
+            width: fit-content;
+          }
+        }
         .img-radius {
           height: 100px;
           border-radius: 50%;
@@ -45,6 +77,7 @@ $gray: #929292;
           font-size: 16px;
           font-weight: 500;
           color: $black;
+
           margin: 12px 0;
           margin-bottom: 5px;
         }
@@ -52,6 +85,23 @@ $gray: #929292;
           color: #929292;
           font-weight: 500;
           text-wrap: nowrap;
+        }
+        button {
+          padding: 8px 20px;
+          background-color: $blue1;
+          color: $white;
+          font-size: 20px;
+          margin: 20px;
+          border: solid 1px $blue1;
+          border-radius: 20px;
+          transition: all 0.3s ease-in;
+          position: relative;
+          z-index: 1;
+          overflow: hidden;
+          &:hover {
+            box-shadow: rgba(89, 155, 189, 0.315) -4px 4px 11px 2px;
+            transform: scale(1.1);
+          }
         }
       }
       .rightprofile {
@@ -128,6 +178,8 @@ $gray: #929292;
               justify-content: center;
               text-align: center;
               margin-top: 8px;
+              margin-left: 10px;
+              width: 100px;
               .img-radius {
                 height: 80px;
                 border-radius: 50%;
@@ -135,16 +187,22 @@ $gray: #929292;
                 object-fit: cover;
                 width: 80px;
               }
+              p {
+                text-wrap: wrap;
+              }
             }
             .sidechat {
+              display: block;
               padding: 15px 10px;
               margin-top: 15px;
               margin-right: 15px;
               border-radius: 10px;
               background-color: $grey1;
+              box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
               position: relative;
-              max-width: 400px;
-              max-height: 145px;
+
+              width: 300px;
+              max-height: 300px;
 
               &::after {
                 content: "";
@@ -166,14 +224,27 @@ $gray: #929292;
                 font-size: 18px;
                 margin-right: 10px;
               }
-              p {
+              .comment {
                 font-size: 16px;
                 margin: 15px 0;
+                height: fit-content;
+                width: 100%;
+                max-height: 300px !important;
+                text-wrap: wrap !important;
+                text-align: end;
+                overflow: hidden;
               }
               .date {
                 font-size: 12px;
                 margin: 0;
                 color: #929292;
+              }
+              .fa-heart {
+                position: absolute;
+                font-size: 20px;
+                right: 0;
+                color: #fc464d;
+                margin: 10px 0;
               }
             }
           }

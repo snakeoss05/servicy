@@ -149,6 +149,11 @@ export default class serviceController {
     const result = await serviceDao.getReviewsForService(id);
     res.json(result.rows);
   }
+  static async getReviewsForServiceByid(req, res) {
+    const { id } = req.params;
+    const result = await serviceDao.getReviewsForServicebyId(id);
+    res.json(result.rows);
+  }
   static async getNotfications(req, res) {
     const { userid } = req.params;
 
@@ -175,6 +180,36 @@ export default class serviceController {
     } catch (error) {
       console.error(error);
       res.status(500).send("Server error");
+    }
+  }
+  static async addReaction(req, res) {
+    const { report, heart, reviewid, user, userid } = req.body;
+
+    let fieldsToUpdate = {};
+
+    if (report) {
+      fieldsToUpdate.report = `report = ${report}`;
+    }
+    if (heart) {
+      fieldsToUpdate.heart = `heart = ${heart}`;
+    }
+
+    try {
+      const results = await serviceDao.addReaction(fieldsToUpdate, reviewid);
+
+      const notification = {
+        notificationid: Date.now() + reviewid,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        profileimg: user.profileimg,
+        created_at: new Date(),
+        message: `❤︎`,
+      };
+      await serviceDao.sendNotificationToUser(userid, notification);
+      return res.status(200).json(results);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Internal server error.");
     }
   }
 }

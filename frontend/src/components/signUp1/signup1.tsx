@@ -20,7 +20,6 @@ export default function Signup1() {
           "http://localhost:8000/api/user/register",
           values
         );
-        console.log(res);
 
         setalertSuccesmsg(res.data.message);
       } catch (error: any) {

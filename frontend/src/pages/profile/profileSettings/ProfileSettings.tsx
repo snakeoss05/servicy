@@ -75,15 +75,17 @@ export default function ProfileSettings() {
               <input
                 type="text"
                 name="firstname"
+                value={user.firstname}
                 onChange={handleInputsChanges}
                 placeholder="الأسم"
               />
             </div>
             <div className="groupField">
-              <label htmlFor="firstname">اللقب</label>
+              <label htmlFor="lastname">اللقب</label>
               <input
                 type="text"
                 name="lastname"
+                value={user.lastname}
                 onChange={handleInputsChanges}
                 placeholder="اللقب"
               />
@@ -95,6 +97,7 @@ export default function ProfileSettings() {
             <input
               type="text"
               name="email"
+              value={user.email}
               onChange={handleInputsChanges}
               placeholder="بريد الألكترني"
             />
@@ -105,6 +108,7 @@ export default function ProfileSettings() {
             <input
               type="password"
               name="password"
+              
               onChange={handleInputsChanges}
               placeholder="كلمة الدخول"
             />

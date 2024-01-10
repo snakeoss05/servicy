@@ -3,16 +3,20 @@ import "./profileinfo.scss";
 import { useSelector } from "react-redux";
 import StarRating from "../../components/StarRatings";
 import axios from "axios";
+import { useParams } from "react-router-dom";
+import Loading from "../../components/loading/Loading";
 
-export default function Profileinfo(props: any) {
+export default function Profileinfo() {
+  const { serviceid } = useParams();
   const user = useSelector((state: RootState) => state.auth.user);
   const [rating, setRating] = useState(0);
   const [reviewlist, setReviewlist] = useState();
+  const [users, setUsers] = useState();
   const [newreview, setNewreview] = useState({
-    profileimg: user.profileimg,
-    userid: user.userid,
-    serviceid: props.users[0].serviceid,
-    ratedid: props.users[0].userid,
+    profileimg: "",
+    userid: "",
+    serviceid: "",
+    ratedid: "",
     rating: 0,
     comment: "",
     timestamp: new Date(),
@@ -22,7 +26,28 @@ export default function Profileinfo(props: any) {
 
     return <span>{starSymbol.repeat(n)}</span>;
   }
+  const fetchItems = async () => {
+    try {
+      const resp = await axios.get(
+        `http://localhost:8000/api/service/fullinfo/${serviceid}`
+      );
 
+      setUsers(resp.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchReviews = async () => {
+    try {
+      const resp = await axios.get(
+        `http://localhost:8000/api/service/reviews/${serviceid}`
+      );
+
+      setReviewlist(resp.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   function ConvertTime(date) {
     const options = {
       year: "numeric",
@@ -38,8 +63,9 @@ export default function Profileinfo(props: any) {
     return formattedDate;
   }
   useEffect(() => {
-    setReviewlist(props.reviews);
-  }, [props.reviews]);
+    fetchItems();
+    fetchReviews();
+  }, [serviceid]);
   const handleRatingChange = (newRating: number) => {
     setNewreview((prevstate) => ({
       ...prevstate,
@@ -52,6 +78,14 @@ export default function Profileinfo(props: any) {
   );
 
   const addReview = async () => {
+    setNewreview((state) => ({
+      ...state,
+      profileimg: user.profileimg,
+      userid: user.userid,
+      serviceid: serviceid || "",
+      ratedid: users.userid || 0,
+      rating: 0,
+    }));
     try {
       const resp = await axios.post(
         "http://localhost:8000/api/service/addreview",
@@ -70,35 +104,40 @@ export default function Profileinfo(props: any) {
       [name]: value,
     }));
   }
-  return (
+
+  console.log(reviewlist);
+  return users ? (
     <div id="profileinfo">
       <div className="profile">
         <div className="headerprofile">
           <div className="lefprofile">
+            <i className="fa-solid fa-heart"></i>
             <img
-              src={props.users[0]?.profileimg}
+              src={users[0].profileimg}
               className="img-radius"
               alt="User-Profile-Image"></img>
+            <div className="rate">
+              <img src="../../assets/icons/etoile_on.svg" />
+              <p>{users[0].avg_rating}</p>{" "}
+              <span>({users[0].rating_count} تقيم)</span>
+            </div>
+
             <p>
-              {props.users[0]?.firstname} {props.users[0]?.lastname}
+              {users[0].firstname} {users[0].lastname}
             </p>
-            <span>{props.users[0]?.name}</span>
+            <span>{users[0].name}</span>
+            <button>تواصل</button>
           </div>
           <div className="rightprofile">
             <div>
-              <div className="h2">معطيات</div>
+              <div className="h2">معطيات التواصل</div>
               <div>
                 <div className="h6">رقم الهاتف</div>
-                <p>{props.users[0]?.phonenumber}</p>
+                <p>{users[0].phonenumber}</p>
               </div>
               <div>
                 <div className="h6">بريد ألكتروني</div>
-                <p>{props.users[0]?.email}</p>
-              </div>
-              <div>
-                <div className="h6">التقيم</div>
-                <div className="h1">{props.users[0]?.avg_rating}/5.00</div>
-                <div className="h4">{stars(4)} </div>
+                <p>{users[0].email}</p>
               </div>
             </div>
           </div>
@@ -106,7 +145,7 @@ export default function Profileinfo(props: any) {
         <div className="examplePhoto">
           <div className="h2">مثال لبعض مشاريع</div>
           <div className="imgcontainer">
-            <img src={props.users[0]?.image1} alt="exp" />
+            <img src={users[0].image1} alt="exp" />
           </div>
           <div className="reviews">
             <div className="h2">تقيم الخدمات</div>
@@ -133,8 +172,11 @@ export default function Profileinfo(props: any) {
                       <span className="rating">{review.rating}/5.0</span>
                       <span className="stars">{stars(review.rating)}</span>
 
-                      <p>{review.comment}</p>
+                      <div className="comment">{review.comment}</div>
                       <p className="date">{ConvertTime(review.timestamp)}</p>
+                      {review.heart && (
+                        <i className="fa-solid fa-heart fa-beat"></i>
+                      )}
                     </div>
                   </div>
                 );
@@ -168,5 +210,7 @@ export default function Profileinfo(props: any) {
         </div>
       </div>
     </div>
+  ) : (
+    <Loading />
   );
 }

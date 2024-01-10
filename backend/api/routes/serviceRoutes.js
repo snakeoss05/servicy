@@ -16,6 +16,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.get("/get", serviceController.getUsersByServiceName);
+router.get("/getbyid/:id", serviceController.getReviewsForServiceByid);
 router.get("/reviews/:id", serviceController.getReviewsForServices);
 router.post(
   "/create",
@@ -27,6 +28,7 @@ router.put(
   upload.single("picture"),
   serviceController.updateService
 );
+router.put("/addreaction", serviceController.addReaction);
 router.get("/fullinfo/:userid", serviceController.getServiceFullInfo);
 router.post("/addreview", serviceController.addReview);
 router.get("/filter", serviceController.getUsersServiceFilter);

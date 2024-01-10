@@ -1,0 +1,223 @@
+$layout-breakpoint-small: 960px;
+$lightblue: #cfeafd;
+$grey1: #f6f6f6;
+$grey2: #d9d9d9;
+$yellow: #fcc709;
+$blue1: #0b69db;
+$blue2: #3654c2;
+$black: #060606;
+$white: rgba(255, 255, 255);
+$gray: #929292;
+
+#reviewcontainer {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  overflow-y: auto;
+  width: fit-content;
+  align-items: flex-end;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: $white;
+  .review {
+    display: flex;
+    flex-direction: row-reverse;
+    border-bottom: solid 1px $grey1;
+    justify-content: end;
+    padding: 20px;
+
+    .icon-profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      text-align: center;
+      margin-top: 10px;
+      margin-left: 8px;
+      .img-radius {
+        height: 80px;
+        border-radius: 50%;
+        padding: 8px;
+        object-fit: cover;
+        width: 80px;
+      }
+      p {
+        text-wrap: wrap;
+      }
+    }
+    .sidechat {
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      margin-top: 15px;
+      margin-right: 15px;
+      border-radius: 10px;
+      background-color: #f6f6f6;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      position: relative;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      text-align: end;
+      justify-content: flex-start;
+      height: fit-content !important;
+      width: 60%;
+
+      &::before {
+        content: "";
+        border-top: 50px solid $grey1;
+        border-right: 50px solid transparent;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+
+        transform: translate(40px, -3px);
+      }
+      .stars {
+        color: #fcc709;
+        font-size: 24px;
+        background-color: transparent !important;
+        margin-bottom: 10px;
+      }
+      .rating {
+        font-weight: 500;
+        font-size: 18px;
+        margin-right: 10px;
+      }
+      .comment {
+        font-size: 16px;
+        overflow: hidden;
+        width: 200px !important;
+        height: fit-content !important;
+        max-height: 150px !important;
+        margin: 15px 0;
+      }
+      .date {
+        font-size: 12px;
+        margin: 0;
+        color: #929292;
+      }
+    }
+    .reaction {
+      display: flex;
+      flex-direction: column;
+      margin: auto 20px;
+
+      i {
+        margin: 10px 0;
+        transition: transform ease-in 0.2s;
+        &:hover {
+          transform: scale(1.4);
+        }
+      }
+      .fa-heart {
+        color: #fc464d;
+      }
+      .fa-triangle-exclamation {
+        color: rgb(0, 44, 167);
+      }
+    }
+  }
+}
+@media (max-width: $layout-breakpoint-small) {
+  #reviewcontainer {
+    .review {
+      padding: 10px;
+
+      .icon-profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        text-align: center;
+        margin-top: 10px;
+        margin-left: 8px;
+        .img-radius {
+          height: 60px;
+          border-radius: 50%;
+          padding: 8px;
+          object-fit: cover;
+          width: 60px;
+        }
+        p {
+          font-size: 16px;
+          text-wrap: wrap;
+        }
+      }
+      .sidechat {
+        display: block;
+        padding: 15px 10px;
+        margin-top: 15px;
+        margin-right: 15px;
+        border-radius: 10px;
+        z-index: 1;
+        background-color: $grey1;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        position: relative;
+
+        width: 80% !important;
+        max-height: fit-content;
+
+        &::after {
+          content: "";
+          border-top: 50px solid $grey1;
+          border-right: 50px solid transparent;
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index: 1;
+
+          transform: translate(40px, -3px);
+        }
+        .stars {
+          color: #fcc709;
+          font-size: 24px;
+          background-color: transparent !important;
+          margin-bottom: 10px;
+        }
+        .rating {
+          font-weight: 500;
+          font-size: 18px;
+          margin-right: 10px;
+        }
+        .comment {
+          font-size: 16px;
+          overflow: hidden;
+          text-align: end;
+          width: 250px;
+          text-wrap: wrap;
+          max-height: 150px;
+          height: fit-content;
+          margin: 15px 0;
+        }
+        .date {
+          font-size: 12px;
+          margin: 0;
+          color: #929292;
+        }
+      }
+      .reaction {
+        display: flex;
+        flex-direction: column;
+        margin: auto 20px;
+
+        i {
+          margin: 10px 0;
+          transition: transform ease-in 0.2s;
+          &:hover {
+            transform: scale(1.4);
+          }
+        }
+        .fa-heart {
+          color: #fc464d;
+        }
+        .fa-triangle-exclamation {
+          color: rgb(0, 44, 167);
+        }
+      }
+    }
+  }
+}

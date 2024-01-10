@@ -6,7 +6,8 @@ import { logout } from "../../redux/actions/authActions";
 import Notifications from "../notifications/Notifications";
 export default function Navbar() {
   const [toggle, settoggle] = useState(false);
-  const [navbarBg, setNavbarBg] = useState("#060606");
+
+  const [navbarScroll, setNavbarScroll] = useState(false);
   const user = useSelector((state: any) => state.auth.user);
   const isAuthenticated = useSelector(
     (state: any) => state.auth.isAuthenticated
@@ -16,17 +17,14 @@ export default function Navbar() {
     const handleScroll = () => {
       const scrollY = window.scrollY;
 
-      // Adjust the scroll threshold as needed
-      if (scrollY > 400) {
-        setNavbarBg("#333"); // Change to your desired background color
+      if (scrollY < 400) {
+        setNavbarScroll(false);
       } else {
-        setNavbarBg("#060606");
+        setNavbarScroll(true);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -39,10 +37,12 @@ export default function Navbar() {
     <header
       id="Navbar"
       style={{
-        backgroundColor: navbarBg,
+        backgroundColor: navbarScroll ? "#333" : "#060606",
         padding: "10px",
         paddingTop: "15px",
-        transition: "background-color 0.3s ease",
+        boxShadow: navbarScroll
+          ? "box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,rgba(0, 0, 0, 0.3) 0px 3px 7px -3px"
+          : "none",
       }}>
       <div className="logo">
         <Link to="/">
@@ -71,15 +71,16 @@ export default function Navbar() {
               </div>
             </div>
             <div className="icon-box  ">
-              <div className="icon">
-                <i className="fa-solid fa-wrench"></i>
-              </div>
-              <div className="text">
-                <Link to="/services/technicien">
+              <Link to="/services/technicien">
+                <div className="icon">
+                  <i className="fa-solid fa-wrench"></i>
+                </div>
+
+                <div className="text">
                   {" "}
                   <div className="title">تقني صيانة</div>
-                </Link>
-              </div>
+                </div>
+              </Link>
             </div>
             <div className="icon-box  ">
               <div className="icon">
@@ -90,14 +91,14 @@ export default function Navbar() {
               </div>
             </div>
             <div className="icon-box  ">
-              <div className="icon">
-                <i className="fa-solid fa-house"></i>
-              </div>
-              <div className="text">
-                <Link to="/services/loyer">
+              <Link to="/services/loyer">
+                <div className="icon">
+                  <i className="fa-solid fa-house"></i>
+                </div>
+                <div className="text">
                   <div className="title">كراء</div>
-                </Link>
-              </div>
+                </div>
+              </Link>
             </div>
             <div className="icon-box  ">
               <div className="icon">
@@ -241,7 +242,7 @@ export default function Navbar() {
                 <i className="fa-solid fa-comments-dollar"></i>
               </li>
               <li>
-                <a href="#">تقني صيانة</a>
+                <Link to="/services/technicien">تقني صيانة</Link>
                 <i className="fa-solid fa-wrench"></i>
               </li>
               <li>

@@ -9,14 +9,11 @@ $blue2: #3654c2;
 $black: #060606;
 $white: rgba(255, 255, 255);
 
-.ttr {
-  transform: translateY(-230px);
-}
 .container {
   display: flex;
   font-family: "Rubik", sans-serif;
   height: 100vh;
-  padding-top: 150px;
+
   align-items: center;
   background-color: $black;
   flex-direction: row-reverse;
@@ -105,8 +102,9 @@ $white: rgba(255, 255, 255);
     padding: 8px 10px;
   }
   .form > .alertsucess {
-    background-color: orangered;
+    background-color: rgb(58, 230, 72);
     color: white;
+    text-align: center;
     text-wrap: nowrap;
     padding: 8px 10px;
   }

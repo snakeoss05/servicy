@@ -20,38 +20,45 @@ interface users {
 }
 
 export default function Services() {
-  const progressCircle = useRef<SVGSVGElement>(null);
-  const progressContent = useRef<HTMLSpanElement>(null);
   const [users, setUsers] = useState<users[]>([]);
   const [selectedCity, setSelectcity] = useState("");
   const [selectedGov, setselectedGov] = useState("");
   const [jobtype, setjobtype] = useState("");
   const [rating, setRating] = useState(0);
-
   const { category } = useParams();
+
   const handleRatingChange = (newRating: number) => {
     setRating(newRating);
   };
-
-  const fetchItems = async () => {
-    axios
-      .get<users[]>(`http://localhost:8000/api/service/getcategory/${category}`)
-      .then((response) => {
-        setUsers(response.data);
-      });
+  const getuserlistByCategory = async () => {
+    try {
+      const respond = await axios.get(
+        `http://localhost:8000/api/service/getcategory/${category}
+`
+      );
+      setUsers(respond.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
   useEffect(() => {
-    fetchItems();
+    getuserlistByCategory();
   }, [category]);
   const FilterUsers = async () => {
-    axios
-      .get(
+    try {
+      const res = await axios.get(
         `http://localhost:8000/api/service/filter?category=${category}&city=${selectedCity}&address=${selectedGov}&name=${jobtype}&rating=${rating}
 `
-      )
-      .then((response) => {
-        setUsers(response.data);
-      });
+      );
+      setUsers(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setSelectcity("");
+    setselectedGov("");
+    setjobtype("");
+    setRating(0);
   };
 
   const uniquecities = [...new Set(jsonData.map((obj: any) => obj.admin_name))];
@@ -83,50 +90,11 @@ export default function Services() {
             {" "}
             <img src="../../assets/carousel/Sans-titre-2.jpg" alt="" />
           </SwiperSlide>
-          <SwiperSlide>Slide 3</SwiperSlide>
         </Swiper>
       </div>
       <div className="seprate">
         <div className="topRated">
           <h3>أعلى تقيما</h3>
-          <div className="containerCard">
-            <div className="cadre">
-              <img
-                src="../../assets/random people/247-2479526_round-profile-picture-png-transparent-png.png"
-                alt=""></img>
-              <h4>محمود عياري</h4>
-            </div>
-            <div className="descrep">
-              <span>تقني كهرباء</span>
-              <div>
-                <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                <p>التقيم</p>
-              </div>
-              <div>
-                <h4>24365648</h4>
-                <i className="fa-solid fa-phone"></i>
-              </div>
-            </div>
-          </div>
-          <div className="containerCard">
-            <div className="cadre">
-              <img
-                src="../../assets/random people/pexels-italo-melo-2379004.jpg"
-                alt=""></img>
-              <h4>محمود عياري</h4>
-            </div>
-            <div className="descrep">
-              <span>تقني كهرباء</span>
-              <div>
-                <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                <p>التقيم</p>
-              </div>
-              <div>
-                <h4>24365648</h4>
-                <i className="fa-solid fa-phone"></i>
-              </div>
-            </div>
-          </div>
         </div>
         <div>
           <div className="filterBar">
@@ -134,6 +102,7 @@ export default function Services() {
               <label htmlFor="ville">الولاية</label>
               <div className="customSelect">
                 <p>{selectedCity ? selectedCity : "tunis"}</p>
+                <span>▲</span>
                 <ul>
                   {uniquecities.map((city, index) => {
                     return (
@@ -153,6 +122,7 @@ export default function Services() {
               <label htmlFor="address">الدائرة البلدية</label>
               <div className="customSelect">
                 <p>{selectedGov ? selectedGov : "délégation"} </p>
+                <span>▲</span>
                 <ul>
                   {listofGov.map((gov, index) => {
                     return (
@@ -166,10 +136,11 @@ export default function Services() {
             </div>
             <div className="formGroup">
               <label htmlFor="category">نوع الخدمة</label>
-              <div className="customSelect">
+              <div className="customSelect category">
                 <p>{jobtype}</p>
+                <span>▲</span>
                 <ul>
-                  {categorysList["technicien"].map((value, index) => (
+                  {categorysList[category].map((value, index) => (
                     <li key={index} onClick={() => setjobtype(value)}>
                       {value}
                     </li>
@@ -192,12 +163,12 @@ export default function Services() {
             </div>
 
             <button onClick={FilterUsers}>
-              <span>FILTRER</span>
-              <i className="fa-solid fa-filter"></i>
+              <span>البحث</span>
+              <i className="fa-solid fa-magnifying-glass"></i>
             </button>
           </div>
           <div className="listp">
-            {users.map((user) => {
+            {users?.map((user) => {
               return <Card user={user} />;
             })}
           </div>
