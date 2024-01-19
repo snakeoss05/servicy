@@ -7,17 +7,23 @@ $blue1: #0b69db;
 $blue2: #3654c2;
 $black: #060606;
 $white: rgba(255, 255, 255);
+
+.dark-mode {
+  .HeaderImg {
+    background-color: $black !important;
+  }
+}
 #Home {
   position: relative;
   left: 0;
   top: 0;
   background-color: $black;
   width: 100vw;
-
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  border-radius: 0 0 15% 15%;
   height: calc(100vh - 80px);
-
   display: flex;
-
   align-items: center;
   flex-direction: column;
 
@@ -30,7 +36,7 @@ $white: rgba(255, 255, 255);
     font-size: 40px;
     padding: 10px;
     margin-top: 100px;
-    letter-spacing: 0.15em; /* Adjust as needed */
+    letter-spacing: 1px;
     overflow: hidden;
     white-space: nowrap;
     font-family: fantasy;
@@ -81,7 +87,7 @@ $white: rgba(255, 255, 255);
       object-fit: contain;
       z-index: 2;
       width: 100%;
-      height: 120%;
+      height: 110%;
     }
   }
 }

@@ -9,6 +9,7 @@ import Card from "../../components/cards/card";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import categorysList from "../../data/categorys";
+import { useSelector } from "react-redux";
 interface users {
   userid: string;
   phonenumber: number;
@@ -17,6 +18,7 @@ interface users {
   firstname: string;
   lastname: string;
   profileimg: string;
+  serviceid: string;
 }
 
 export default function Services() {
@@ -26,7 +28,7 @@ export default function Services() {
   const [jobtype, setjobtype] = useState("");
   const [rating, setRating] = useState(0);
   const { category } = useParams();
-
+  const darkMode = useSelector((state) => state.darkMode.darkMode);
   const handleRatingChange = (newRating: number) => {
     setRating(newRating);
   };
@@ -65,7 +67,7 @@ export default function Services() {
   const listofGov = jsonData.filter((obj) => obj.admin_name === selectedCity);
 
   return (
-    <div id="services">
+    <div id="services" className={darkMode && "dark-mode"}>
       <div className="carouselContain">
         <Swiper
           spaceBetween={30}
@@ -169,7 +171,7 @@ export default function Services() {
           </div>
           <div className="listp">
             {users?.map((user) => {
-              return <Card user={user} />;
+              return <Card user={user} key={user.serviceid} />;
             })}
           </div>
         </div>

@@ -11,6 +11,7 @@ export function initSocket(server) {
 
   io.on("connection", (socket) => {
     socket.on("register", (userId) => {
+      console.log(`Client connected: ${socket.id}`);
       userSockets.set(userId, socket.id);
     });
 

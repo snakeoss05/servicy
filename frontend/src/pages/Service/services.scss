@@ -8,7 +8,20 @@ $blue1: #0b69db;
 $blue2: #3654c2;
 $black: #060606;
 $white: rgba(255, 255, 255);
-
+.dark-mode {
+  background-color: $black !important;
+  .seprate {
+    .topRated {
+      background-color: $black !important;
+      h3 {
+        color: $grey1;
+      }
+    }
+    .listp {
+      background-color: $black !important;
+    }
+  }
+}
 #services {
   background-color: rgb(255, 255, 255);
   height: fit-content;
@@ -40,6 +53,9 @@ $white: rgba(255, 255, 255);
     grid-template-columns: 20% 80%;
 
     overflow: hidden;
+    .fa-filter {
+      display: none;
+    }
     .filterBar {
       display: flex;
       flex-direction: row-reverse;
@@ -200,7 +216,7 @@ $white: rgba(255, 255, 255);
     .listp {
       display: flex;
       flex-direction: row;
-      height: 50vh !important;
+      height: 50vh;
       background-color: $white;
       height: fit-content;
       align-items: flex-start;
@@ -218,8 +234,33 @@ $white: rgba(255, 255, 255);
     .carouselContain {
       height: 200px;
     }
-    .filterBar {
-      flex-direction: column;
+
+    .seprate {
+      display: grid;
+      grid-template-columns: 100%;
+      overflow: hidden;
+      .topRated {
+        display: none !important;
+      }
+      .listp {
+        height: fit-content !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-content: center !important;
+        border-right: none;
+      }
+
+      .filterBar {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        flex-wrap: wrap;
+        .formGroup {
+          .customSelect {
+            width: 200px !important;
+          }
+        }
+      }
     }
   }
 }

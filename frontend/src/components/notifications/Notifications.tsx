@@ -2,41 +2,15 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./notifications.scss";
 import { useSelector } from "react-redux";
-import { io } from "socket.io-client";
+import { socket } from "../../socket";
 
 export default function Notifications() {
-  const socket = useRef();
   const [notifications, setNotifications] = useState([]);
   const [display, setDisplay] = useState(false);
   const user = useSelector((state: any) => state.auth.user);
 
   useEffect(() => {
-    socket.current = io("http://localhost:8000", { path: "/socket.io" });
-    socket.current.on("connect", () => {
-      console.log("Connected to the server");
-      socket.current.emit("register", user.userid);
-    });
-
-    return () => {
-      socket.current.off("connect");
-      socket.current.disconnect();
-    };
-  }, []);
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:8000/api/service/notfications/${user.userid}`
-        );
-        setNotifications(res.data);
-      } catch (error) {
-        console.error("Error fetching notifications", error);
-      }
-    };
-    fetchNotifications();
-  }, []);
-  useEffect(() => {
-    socket.current.on("notification", (notfication) => {
+    socket.on("notification", (notfication) => {
       setNotifications((oldarray) => [...oldarray, notfication]);
     });
   }, [setNotifications]);

@@ -3,10 +3,12 @@ import React, { useState, useRef } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
+import { useSelector } from "react-redux";
 export default function Signup1() {
   const form = useRef(null);
   const [alertSuccesmsg, setalertSuccesmsg] = useState("");
   const [alertfailmsg, setalertfailmsg] = useState("");
+  const darkMode = useSelector((state) => state.darkMode.darkMode);
   const formData = useFormik({
     initialValues: {
       firstname: "",
@@ -45,7 +47,7 @@ export default function Signup1() {
   });
 
   return (
-    <div className="container ttr">
+    <div className={`container ttr ${darkMode && "dark-mode"}`}>
       <div className="left">
         <div className="header">
           <h2 className="animation a1">مرحبًا بك</h2>

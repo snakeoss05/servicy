@@ -3,11 +3,13 @@ import axios from "axios";
 import "./rating.scss";
 import { useSelector } from "react-redux";
 export default function Rating(props: any) {
+  const user = useSelector((state: any) => state.auth.user);
   const [reaction, setReaction] = useState({
-    heart: false,
+    user: user,
+    heart: true,
     report: false,
   });
-  const user = useSelector((state: any) => state.auth.user);
+
   function stars(n: number) {
     const starSymbol = String.fromCharCode(9733);
 
@@ -30,14 +32,13 @@ export default function Rating(props: any) {
   }
 
   const sendreaction = async (id, userid) => {
+    setReaction((state) => ({
+      ...state,
+      reviewid: id,
+      userid: userid,
+    }));
+
     try {
-      setReaction((state) => ({
-        ...state,
-        heart: true,
-        reviewid: id,
-        userid: userid,
-        user: user,
-      }));
       const resp = await axios.put(
         `http://localhost:8000/api/service/addreaction`,
         reaction
@@ -47,11 +48,12 @@ export default function Rating(props: any) {
       console.log(err);
     }
   };
+
   return (
     <div id="reviewcontainer">
       {props.reviews?.map((review) => {
         return (
-          <div className="review">
+          <div className="review" key={review.reviewid}>
             <div className="icon-profile">
               <img
                 src={

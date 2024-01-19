@@ -112,6 +112,11 @@ export default function CreateService() {
         return (
           <div className="step1">
             <h4>أنشاء خدمات</h4>
+            <div className="steps">
+              <span className="circle2">2</span>
+              <span className="line"></span>
+              <span className="circle1">1</span>
+            </div>
             <div className="gridcontainer">
               <div className="groupField">
                 <label htmlFor="firstname">تصنيف الخدمة</label>
@@ -205,6 +210,12 @@ export default function CreateService() {
         return (
           <div className="step2">
             <div className="title">حمل صور لبعض مشاريع سابقة</div>
+            <div className="steps">
+              <span className="circle2">2</span>
+              <span className="line"></span>
+              <span className="circle1">1</span>
+            </div>
+
             <div className="imgplace">
               {image ? (
                 <img src={image} alt="serviceImg" />
@@ -215,7 +226,7 @@ export default function CreateService() {
 
             <label className="custom-file-upload">
               <input type="file" name="image1" onChange={handleFileChange} />
-              تحميل
+              <span>تحميل</span>
               <i className="fa-solid fa-cloud-arrow-up"></i>
               <p>يجب ألا يتجاوز حجم الملف 2 مياجا</p>
             </label>

@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./About.scss";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 export default function About() {
   const progressCircle = useRef<SVGSVGElement>(null);
   const progressContent = useRef<HTMLSpanElement>(null);
+  const darkMode = useSelector((state) => state.darkMode.darkMode);
 
   return (
-    <div id="About">
+    <div id="About" className={`${darkMode ? "dark-mode" : "light-mode"}`}>
       <h1>خدماتنا</h1>
       <div className="box">
         <Swiper

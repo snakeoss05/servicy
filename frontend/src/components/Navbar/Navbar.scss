@@ -433,7 +433,7 @@ header {
   }
   .rightNav {
     display: flex;
-    margin-right: 60px;
+    margin-right: 20px;
     z-index: 5;
     margin-top: 8px;
     .list {
@@ -527,11 +527,14 @@ header {
     padding: 10px;
     align-items: flex-start;
     align-content: center;
+    justify-content: space-evenly !important;
     height: 55px;
+    width: 100%;
+
     .logo {
       z-index: 4;
       transform: translateY(0);
-      margin-left: 10px;
+      margin-left: 0px;
       .logod {
         display: none;
       }
@@ -542,12 +545,12 @@ header {
     }
     .rightNav {
       display: flex;
-      margin-right: 25px;
+      margin-right: 0px;
       z-index: 5;
-      margin-top: 8px;
       .login {
-        padding: 12px;
-        margin-right: 10px;
+        padding: 5px;
+        margin-right: 5px;
+        margin-top: 5px;
         font-size: 14px;
         &:hover {
           background-color: #ffffff60;
@@ -555,6 +558,8 @@ header {
       }
       .signup {
         padding: 12px;
+        padding: 5px;
+        margin-top: 5px;
         font-size: 14px;
         &:hover {
           background-color: #0b69db7c;
@@ -569,11 +574,13 @@ header {
     display: block !important;
     align-items: center;
     padding-top: 15px;
+
     #toggle {
       display: block;
       width: 28px;
       height: 30px;
-      margin: 10px;
+      margin-right: 10px;
+      margin-top: 10px;
     }
 
     #toggle span:after,

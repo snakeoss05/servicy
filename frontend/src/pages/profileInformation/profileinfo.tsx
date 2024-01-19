@@ -8,16 +8,18 @@ import Loading from "../../components/loading/Loading";
 
 export default function Profileinfo() {
   const { serviceid } = useParams();
+  const darkMode = useSelector((state) => state.darkMode.darkMode);
   const user = useSelector((state: RootState) => state.auth.user);
   const [rating, setRating] = useState(0);
   const [reviewlist, setReviewlist] = useState();
   const [users, setUsers] = useState();
   const [newreview, setNewreview] = useState({
-    profileimg: "",
-    userid: "",
-    serviceid: "",
-    ratedid: "",
-    rating: 0,
+    profileimg: user.profileimg,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    userid: user.userid,
+    serviceid: serviceid,
+    rating: rating,
     comment: "",
     timestamp: new Date(),
   });
@@ -66,6 +68,7 @@ export default function Profileinfo() {
     fetchItems();
     fetchReviews();
   }, [serviceid]);
+
   const handleRatingChange = (newRating: number) => {
     setNewreview((prevstate) => ({
       ...prevstate,
@@ -77,20 +80,17 @@ export default function Profileinfo() {
     (state: any) => state.auth.isAuthenticated
   );
 
-  const addReview = async () => {
+  const addReview = async (ratedid) => {
     setNewreview((state) => ({
       ...state,
-      profileimg: user.profileimg,
-      userid: user.userid,
-      serviceid: serviceid || "",
-      ratedid: users.userid || 0,
-      rating: 0,
+      ratedid: ratedid,
     }));
     try {
       const resp = await axios.post(
         "http://localhost:8000/api/service/addreview",
         newreview
       );
+      console.log(resp);
       setReviewlist((oldarray) => [...oldarray, newreview]);
     } catch (err) {
       console.log(err);
@@ -105,9 +105,8 @@ export default function Profileinfo() {
     }));
   }
 
-  console.log(reviewlist);
   return users ? (
-    <div id="profileinfo">
+    <div id="profileinfo" className={darkMode && "css-selector"}>
       <div className="profile">
         <div className="headerprofile">
           <div className="lefprofile">
@@ -152,7 +151,7 @@ export default function Profileinfo() {
             <div className="reviewcontainer">
               {reviewlist?.map((review) => {
                 return (
-                  <div className="review">
+                  <div className="review" key={review.reviewid}>
                     <div className="icon-profile">
                       <img
                         src={
@@ -184,7 +183,7 @@ export default function Profileinfo() {
             </div>
             {isAuthenticated ? (
               <div className="sendReview">
-                <button onClick={addReview}>أرسال</button>
+                <button onClick={() => addReview(users.userid)}>أرسال</button>
                 <div>
                   <StarRating
                     totalStars={5}

@@ -1,5 +1,6 @@
 import serviceDao from "../dao/serviceDao.js";
 import path from "path";
+import userDao from "../dao/userDao.js";
 export default class serviceController {
   static async getUsersByServiceName(req, res) {
     const { name } = req.params;
@@ -186,25 +187,28 @@ export default class serviceController {
     const { report, heart, reviewid, user, userid } = req.body;
 
     let fieldsToUpdate = {};
-
+    if (!reviewid) {
+      return;
+    }
     if (report) {
       fieldsToUpdate.report = `report = ${report}`;
     }
     if (heart) {
       fieldsToUpdate.heart = `heart = ${heart}`;
+    } else {
+      return;
     }
-
+    const notification = {
+      notificationid: Date.now() + reviewid,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      profileimg: user.profileimg,
+      created_at: Date.now(),
+      message: `❤︎`,
+    };
     try {
       const results = await serviceDao.addReaction(fieldsToUpdate, reviewid);
 
-      const notification = {
-        notificationid: Date.now() + reviewid,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        profileimg: user.profileimg,
-        created_at: new Date(),
-        message: `❤︎`,
-      };
       await serviceDao.sendNotificationToUser(userid, notification);
       return res.status(200).json(results);
     } catch (error) {

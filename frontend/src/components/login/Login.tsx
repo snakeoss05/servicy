@@ -1,17 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "./login.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/actions/authActions";
 import { redirect } from "react-router-dom";
+import { connectSocket } from "../../socket";
 export default function Login() {
+  const dispatch = useDispatch();
+  const darkMode = useSelector((state) => state.darkMode.darkMode);
   const [logform, setlogform] = useState({
     email: "",
     password: "",
   });
   const [verificationMessage, setVerificationMessage] = useState("");
-  const dispatch = useDispatch();
 
   function HandleChange(event: any) {
     const { name, value } = event.target;
@@ -20,6 +22,7 @@ export default function Login() {
       [name]: value,
     }));
   }
+
   const loginform = async (e: any) => {
     e.preventDefault();
     try {
@@ -29,6 +32,7 @@ export default function Login() {
       );
 
       dispatch(login({ token: response.data.token, user: response.data.user }));
+      connectSocket(response.data.user.userid);
       redirect("/profile");
     } catch (error: any) {
       setVerificationMessage(error.response.data);
@@ -42,7 +46,7 @@ export default function Login() {
     }
   };
   return (
-    <div className="container ttr">
+    <div className={`container ttr ${darkMode && "dark-mode"}`}>
       <div className="left">
         <div className="header">
           <h2 className="animation a1">مرحبًا بعودتك</h2>

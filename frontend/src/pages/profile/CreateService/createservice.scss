@@ -24,7 +24,39 @@ $white: rgba(255, 255, 255);
     width: 100%;
     flex-direction: column;
     align-items: center;
-
+    .steps {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+      .circle1,
+      .circle2 {
+        border-radius: 50%;
+        font-size: 20px;
+        padding: 4px 10px;
+        z-index: 3;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      }
+      .circle1 {
+        background: linear-gradient(
+          90deg,
+          rgba(0, 210, 255, 1) 0%,
+          rgba(58, 123, 213, 1) 100%
+        );
+        color: $grey1;
+      }
+      .circle2 {
+        background-color: lightblue;
+        color: $grey2;
+      }
+      .line {
+        display: block;
+        z-index: 2;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        height: 8px;
+        background-color: lightblue;
+        width: 100px;
+      }
+    }
     .gridcontainer {
       display: flex;
       flex-direction: row-reverse;
@@ -178,6 +210,27 @@ $white: rgba(255, 255, 255);
       font-size: 22px;
       margin-bottom: 10px;
     }
+    .steps {
+      .circle1,
+      .circle2 {
+        z-index: 3;
+        background: linear-gradient(
+          90deg,
+          rgba(0, 210, 255, 1) 0%,
+          rgba(58, 123, 213, 1) 100%
+        );
+
+        color: $grey1;
+      }
+      .line {
+        z-index: 2;
+        background: linear-gradient(
+          90deg,
+          rgba(0, 210, 255, 1) 0%,
+          rgba(58, 123, 213, 1) 100%
+        );
+      }
+    }
     .imgplace {
       width: 300px;
       height: 300px;
@@ -215,12 +268,18 @@ $white: rgba(255, 255, 255);
         color: $white;
         background-color: #060606;
       }
+      span {
+        font-weight: 600;
+      }
       &:hover i {
         transform: translateY(-5px);
       }
       i {
         margin-left: 8px;
         transition: transform ease 0.3s;
+      }
+      p {
+        color: #777777;
       }
     }
   }

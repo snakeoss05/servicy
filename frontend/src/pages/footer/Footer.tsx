@@ -1,8 +1,10 @@
 import React from "react";
 import "./footer.css";
+import { useSelector } from "react-redux";
 export default function Footer() {
+  const darkMode = useSelector((state) => state.darkMode.darkMode);
   return (
-    <footer className="new_footer_area bg_color">
+    <footer className={`new_footer_area bg_color ${darkMode && "dark-mode"}`}>
       <div className="new_footer_top">
         <div className="containert">
           <div className="row">

@@ -1,33 +1,15 @@
 import React, { useState } from "react";
 import "./card.scss";
-import Modal from "../ModalBox/ModalBox";
-import Profileinfo from "../../pages/profileInformation/profileinfo";
-import axios from "axios";
-import Loading from "../loading/Loading";
 import { Link } from "react-router-dom";
 
 export default function Card(props: any) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [fullInfo, setfullInfo] = useState();
   const [heart, setheart] = useState(false);
-  const [reviews, setReviews] = useState([]);
-  const openModal = async () => {
-    setIsModalOpen(true);
-    fetchItems();
-    fetchReviews();
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-
 
   return (
     <div>
       <div className="containerCard">
         <Link to={`/profile/${props.user.serviceid}`}>
-          <div className="cadre" onClick={openModal}>
+          <div className="cadre">
             <i
               className="fa-solid fa-heart"
               style={{ color: heart ? "orangered" : "white" }}

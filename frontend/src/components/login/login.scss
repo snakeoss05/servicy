@@ -9,13 +9,23 @@ $blue2: #3654c2;
 $black: #060606;
 $white: rgba(255, 255, 255);
 
+.dark-mode {
+  background-color: $black !important;
+  .header {
+    h4 {
+      color: $white !important;
+    }
+    .form > p > a {
+      color: #ddd !important;
+    }
+  }
+}
 .container {
   display: flex;
   font-family: "Rubik", sans-serif;
   height: 100vh;
-
   align-items: center;
-  background-color: $black;
+  background-color: $white;
   flex-direction: row-reverse;
   overflow: hidden;
 
@@ -43,7 +53,7 @@ $white: rgba(255, 255, 255);
       margin-top: 10px;
       font-weight: normal;
       font-size: 15px;
-      color: $white;
+      color: $black;
     }
 
     .form {
@@ -58,7 +68,7 @@ $white: rgba(255, 255, 255);
     }
 
     .form > p > a {
-      color: #ddd;
+      color: #747474;
       font-size: 14px;
     }
 

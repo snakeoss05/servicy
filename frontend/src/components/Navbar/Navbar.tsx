@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/actions/authActions";
 import Notifications from "../notifications/Notifications";
+import DarkModeBtn from "../darkmodeBtn/DarkModeBtn";
+import { disconnectSocket } from "../../socket";
 export default function Navbar() {
   const [toggle, settoggle] = useState(false);
-
   const [navbarScroll, setNavbarScroll] = useState(false);
   const user = useSelector((state: any) => state.auth.user);
   const isAuthenticated = useSelector(
@@ -31,6 +32,7 @@ export default function Navbar() {
   }, []);
   function singout() {
     dispatch(logout());
+    disconnectSocket();
   }
 
   return (
@@ -219,6 +221,7 @@ export default function Navbar() {
             </Link>
           </>
         )}
+        <DarkModeBtn />
       </div>
       <div className="sideNav">
         <a
