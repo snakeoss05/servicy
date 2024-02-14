@@ -12,12 +12,16 @@ import Signup1 from "./components/signUp1/signup1";
 import Services from "./pages/Service/Services";
 import Profile from "./pages/profile/Profile.tsx";
 import Profileinfo from "./pages/profileInformation/profileinfo.tsx";
+import { connectSocket, socket } from "./socket.tsx";
 
 function App() {
   const isAuthenticated = useSelector(
     (state: any) => state.auth.isAuthenticated
   );
-
+  const user = useSelector((state: any) => state.auth.user);
+  if (!socket.connected) {
+    connectSocket(user.userid);
+  }
   return (
     <>
       {" "}
@@ -40,6 +44,7 @@ function App() {
           path="/profile"
           element={isAuthenticated ? <Profile /> : <Login />}
         />
+        <Route path="/CreateService/:tab" element={<Profile />} />
         <Route
           path="/login"
           element={isAuthenticated ? <Profile /> : <Login />}

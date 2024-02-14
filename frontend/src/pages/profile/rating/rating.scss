@@ -12,8 +12,8 @@ $gray: #929292;
 #reviewcontainer {
   display: flex;
   flex-direction: column;
-  height: 520px;
-  margin: auto;
+  height: 95%;
+  margin: 10px auto;
   overflow-y: auto;
   border-radius: 25px;
   width: fit-content;
@@ -125,8 +125,14 @@ $gray: #929292;
 }
 @media (max-width: $layout-breakpoint-small) {
   #reviewcontainer {
+    margin: 0;
+    margin-right: auto;
+
     .review {
-      padding: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: end;
 
       .icon-profile {
         display: flex;
@@ -136,7 +142,7 @@ $gray: #929292;
         width: 60px;
         text-align: center;
         margin-top: 10px;
-        margin-left: 8px;
+        margin: 0 auto;
         .img-radius {
           height: 60px;
           border-radius: 50%;
@@ -159,33 +165,25 @@ $gray: #929292;
         background-color: $grey1;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         position: relative;
-        width: 185px !important;
+        width: 200px !important;
         max-height: fit-content;
 
-        &::after {
-          content: "";
-          border-top: 50px solid $grey1;
-          border-right: 50px solid transparent;
-          position: absolute;
-          top: 0;
-          right: 0;
-          z-index: 1;
-
-          transform: translate(40px, -3px);
+        &::before {
+          display: none !important;
         }
         .stars {
           color: #fcc709;
-          font-size: 24px;
+          font-size: 18px;
           background-color: transparent !important;
           margin-bottom: 10px;
         }
         .rating {
           font-weight: 500;
-          font-size: 18px;
+          font-size: 14px;
           margin-right: 10px;
         }
         .comment {
-          font-size: 16px;
+          font-size: 14px;
           overflow: hidden;
           width: 100% !important;
           text-align: end !important;
@@ -203,11 +201,11 @@ $gray: #929292;
       }
       .reaction {
         display: flex;
-        flex-direction: column;
-        margin: auto 20px;
+        flex-direction: row;
+        margin: 10px 20px;
 
         i {
-          margin: 10px 0;
+          margin: 10px;
           transition: transform ease-in 0.2s;
           &:hover {
             transform: scale(1.4);

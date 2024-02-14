@@ -32,7 +32,7 @@ export default function Rating(props: any) {
   }
 
   const sendreaction = async (id, userid) => {
-    setReaction((state) => ({
+    await setReaction((state) => ({
       ...state,
       reviewid: id,
       userid: userid,

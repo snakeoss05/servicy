@@ -56,7 +56,7 @@ export default function Login() {
         </div>
         <form className="form" onSubmit={loginform}>
           <input
-            type="email"
+            type="text"
             className="form-field animation a3"
             placeholder="البريد ألكتروني"
             onChange={HandleChange}

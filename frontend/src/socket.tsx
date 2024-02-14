@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { io } from "socket.io-client";
 
 export const socket = io("http://localhost:8000", {
@@ -13,8 +14,6 @@ export const connectSocket = (userId: any) => {
       console.log("Connected to the server");
       socket.emit("register", userId);
     });
-
-    socket.on("disconnect", () => {});
   }
 };
 
@@ -23,3 +22,6 @@ export const disconnectSocket = () => {
     socket.disconnect();
   }
 };
+function setconversation(arg0: (oldarray: any) => any[]) {
+  throw new Error("Function not implemented.");
+}

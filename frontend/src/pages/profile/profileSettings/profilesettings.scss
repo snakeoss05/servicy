@@ -114,6 +114,7 @@ $white: rgba(255, 255, 255);
 }
 @media (max-width: $layout-breakpoint-small) {
   #profileSettings {
+    width: 100%;
     flex-direction: column;
     h4 {
       margin: 0 auto;
@@ -135,12 +136,13 @@ $white: rgba(255, 255, 255);
       button {
         background-color: $black;
         color: $white;
+        width: 70%;
         font-size: 18px;
         margin-top: 15px;
         border: none;
         font-weight: 500;
         letter-spacing: 1px;
-
+        margin: auto;
         padding: 8px;
         transition: background-color ease-in-out 0.3s;
         &:hover {
@@ -152,16 +154,16 @@ $white: rgba(255, 255, 255);
         display: flex;
         flex-direction: column;
         text-align: end;
-        width: 100%;
+        width: 70% !important;
         margin-bottom: 8px;
-        margin-left: auto;
+        margin-right: auto;
 
         label {
           font-size: 16px;
           margin: 6px 0;
         }
         input {
-          font-size: medium;
+          font-size: medium !important;
           text-align: end;
           padding: 8px;
           background-color: $white;

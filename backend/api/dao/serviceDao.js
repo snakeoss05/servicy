@@ -86,6 +86,7 @@ export default class serviceDao {
         "UPDATE services SET avg_rating = (SELECT AVG(rating)  FROM reviews WHERE reviews.serviceid = $1),rating_count=rating_count+1 WHERE services.serviceid = $1;",
         [serviceid]
       );
+
       await db.query(
         "INSERT INTO notifications(userid,raterid,message) VALUES ($1,$2,$3)",
         [ratedid, userid, comment]
@@ -148,12 +149,12 @@ export default class serviceDao {
   }
 
   static async sendNotificationToUser(userId, notification) {
-    const socketId = getUserSocketId(userId);
+    const socketId = await getUserSocketId(userId);
     if (socketId) {
       const io = getIo();
       io.to(socketId).emit("notification", notification);
     } else {
-      return;
+      console.log("no userid provided");
     }
   }
   static async addReaction(reaction, reviewid) {

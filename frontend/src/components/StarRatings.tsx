@@ -38,6 +38,8 @@ const StarRating: React.FC<StarRatingProps> = ({
           onMouseLeave={handleStarLeave}
           style={{
             cursor: "pointer",
+            borderRadius: "50%",
+            padding: "0 4px",
             boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
             color: index < (hoveredRating || rating) ? "gold" : "lightgray",
           }}>

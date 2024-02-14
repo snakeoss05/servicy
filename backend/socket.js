@@ -1,7 +1,9 @@
 import { Server as socketIo } from "socket.io";
 let io;
 const userSockets = new Map();
-
+export function getUserSocketId(userId) {
+  return userSockets.get(userId);
+}
 export function initSocket(server) {
   io = new socketIo(server, {
     cors: {
@@ -11,8 +13,11 @@ export function initSocket(server) {
 
   io.on("connection", (socket) => {
     socket.on("register", (userId) => {
-      console.log(`Client connected: ${socket.id}`);
-      userSockets.set(userId, socket.id);
+      const user = getUserSocketId(userId);
+      if (!user) {
+        console.log(`Client conncted: ${socket.id}`);
+        userSockets.set(userId, socket.id);
+      }
     });
 
     socket.on("disconnect", () => {
@@ -27,10 +32,6 @@ export function initSocket(server) {
   });
 
   return io;
-}
-
-export function getUserSocketId(userId) {
-  return userSockets.get(userId);
 }
 
 export const getIo = () => {

@@ -117,4 +117,9 @@ export default class UserController {
     const result = await userDao.getUserByService(serviceid);
     res.status(200).json(result);
   }
+  static async SendMessage(req, res) {
+    const { reciverID, message, user } = req.body;
+
+    await userDao.SendMessage(reciverID, message, user);
+  }
 }

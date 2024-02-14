@@ -48,11 +48,15 @@ $white: rgba(255, 255, 255);
     position: absolute;
     display: block;
     top: 100%;
+    outline: 5px white;
     right: 0;
     padding: 10px;
     border-radius: 15px;
+    overflow-y: auto;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     height: fit-content;
+    max-height: 350px;
+
     width: 300px;
     background-color: white;
     animation: opacitychange 0.3s ease-in-out;

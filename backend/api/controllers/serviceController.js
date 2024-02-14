@@ -1,6 +1,7 @@
 import serviceDao from "../dao/serviceDao.js";
 import path from "path";
 import userDao from "../dao/userDao.js";
+
 export default class serviceController {
   static async getUsersByServiceName(req, res) {
     const { name } = req.params;
@@ -95,27 +96,32 @@ export default class serviceController {
     }
   }
   static async addReview(req, res) {
-    const { userid, serviceid, rating, comment, ratedid } = req.body;
+    const { serviceid, rating, comment, userid } = req.body;
 
-    const result = await serviceDao.addReview(
-      userid,
-      serviceid,
-      rating,
-      comment,
-      ratedid
-    );
-    const results2 = await serviceDao.getRaterid(userid);
-
-    const notification = {
-      notificationid: Date.now() + serviceid,
-      firstname: results2[0].firstname,
-      lastname: results2[0].lastname,
-      profileimg: results2[0].profileimg,
-      created_at: new Date(),
-      message: comment,
-    };
-    serviceDao.sendNotificationToUser(ratedid, notification);
-    res.json(result.message);
+    try {
+      const user = (await userDao.getUserById(userid)).rows[0];
+      const notification = {
+        notificationid: Date.now() + serviceid,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        profileimg: user.profileimg,
+        created_at: new Date(),
+        message: comment,
+      };
+      const ratedid = (await userDao.getUserIDByService(serviceid)).rows[0];
+ 
+      const result = await serviceDao.addReview(
+        user.userid,
+        serviceid,
+        rating,
+        comment,
+        ratedid
+      );
+    await  serviceDao.sendNotificationToUser(ratedid.userid, notification);
+      res.json(result.message);
+    } catch (err) {
+      console.log(err);
+    }
   }
   static async getServiceById(req, res) {
     const { userid } = req.params;
@@ -198,18 +204,20 @@ export default class serviceController {
     } else {
       return;
     }
-    const notification = {
-      notificationid: Date.now() + reviewid,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      profileimg: user.profileimg,
-      created_at: Date.now(),
-      message: `❤︎`,
-    };
+
     try {
-      const results = await serviceDao.addReaction(fieldsToUpdate, reviewid);
+      const notification = {
+        notificationid: Date.now() + reviewid,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        profileimg: user.profileimg,
+        created_at: new Date(),
+        message: `❤︎`,
+      };
 
       await serviceDao.sendNotificationToUser(userid, notification);
+      const results = await serviceDao.addReaction(fieldsToUpdate, reviewid);
+
       return res.status(200).json(results);
     } catch (error) {
       console.log(error);

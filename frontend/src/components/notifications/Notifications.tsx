@@ -2,19 +2,50 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./notifications.scss";
 import { useSelector } from "react-redux";
-import { socket } from "../../socket";
-
+import { connectSocket, socket } from "../../socket";
 export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [display, setDisplay] = useState(false);
+  const io: any = useRef();
+  io.current = socket;
   const user = useSelector((state: any) => state.auth.user);
 
   useEffect(() => {
-    socket.on("notification", (notfication) => {
-      setNotifications((oldarray) => [...oldarray, notfication]);
+    io.current.on("notification", (notification) => {
+      // Check if the notification is already in the state
+      const isNotificationExists = notifications.some(
+        (n) => n.id === notification.id
+      );
+      if (!isNotificationExists) {
+        setNotifications((oldarray) => [...oldarray, notification]);
+        const audio = new Audio(
+          "../../assets/sounds/mixkit-positive-notification-951.wav"
+        );
+        audio.volume = 0.1;
+        audio.play();
+        const notificatione = new Notification("new notification", {
+          body: notification.message,
+          icon: notification.profileimg,
+        });
+        if (notificatione) {
+          notificatione;
+        }
+      }
     });
-  }, [setNotifications]);
-
+    return () => {
+      io.current.off("notification");
+    };
+  }, [notifications]);
+  useEffect(() => {
+    const getNotfications = async () => {
+      const resp = await axios.get(
+        `http://localhost:8000/api/service/notfications/${user.userid}`
+      );
+      setNotifications(resp.data);
+      console.log(resp);
+    };
+    getNotfications();
+  }, []);
   function ConvertTime(date) {
     const currentDate = new Date();
     const dateObject = new Date(date);
@@ -31,7 +62,7 @@ export default function Notifications() {
     } `;
     return formattedDate;
   }
-  const deleteNotification = async (e, notificationId) => {
+  /* const deleteNotification = async (e, notificationId) => {
     try {
       const response = await axios.delete(
         `http://localhost:8000/api/service/notfications/delete?notificationid=${notificationId}&userid=${user.userid}`
@@ -56,7 +87,20 @@ export default function Notifications() {
       console.error("Error deleting notification", error);
     }
   };
+*/
+  const deleteNotification = async (e, notificationId) => {
+    const deletenotification = setTimeout(() => {
+      setNotifications((notifications) =>
+        notifications.filter(
+          (notification) => notification.notificationid !== notificationId
+        )
+      );
+    }, 400);
 
+    return () => {
+      clearTimeout(deletenotification);
+    };
+  };
   return (
     <div id="notifactions">
       <i

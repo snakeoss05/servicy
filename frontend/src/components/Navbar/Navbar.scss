@@ -442,6 +442,23 @@ header {
         background-color: rgba($color: #d1d1d1, $alpha: 0.2);
       }
     }
+    .create {
+      color: $white;
+      margin-top: 5px;
+      margin-right: 8px;
+      text-transform: capitalize;
+      font-weight: 600;
+      border: dashed 1px;
+      padding: 6px 10px;
+      border-radius: 25px;
+      transition: all ease-in 0.3s;
+      &:hover {
+        border: solid 1px $blue1;
+        box-shadow: rgba(46, 98, 240, 0.4) 0px 5px,
+          rgba(46, 98, 240, 0.3) 0px 10px, rgba(46, 98, 240, 0.2) 0px 15px,
+          rgba(46, 98, 240, 0.1) 0px 20px, rgba(46, 98, 240, 0.05) 0px 25px;
+      }
+    }
     .notifaction {
       position: relative;
       &:hover .menu {

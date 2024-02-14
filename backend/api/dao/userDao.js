@@ -1,4 +1,5 @@
 import db from "../config/db.js"; // Import your database connection object
+import { getIo, getUserSocketId } from "../../socket.js";
 
 export default class userDao {
   static async findUserByEmail(email) {
@@ -38,9 +39,16 @@ export default class userDao {
       }
     }
   }
+
   static async getUserByService(serviceid) {
     return await db.query(
       "SELECT services.*,users.firstname,users.lastname FROM services JOIN users ON services.userid = users.userid WHERE serviceid=$1",
+      [serviceid]
+    );
+  }
+  static async getUserIDByService(serviceid) {
+    return await db.query(
+      "SELECT users.userid FROM services JOIN users ON services.userid = users.userid WHERE serviceid=$1",
       [serviceid]
     );
   }
@@ -52,5 +60,24 @@ export default class userDao {
   `;
 
     return await db.query(query);
+  }
+  static async SendMessage(reciverID, message, user) {
+    const newMessage = {
+      notificationid: Date.now() + reciverID,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      profileimg: user.profileimg,
+      created_at: new Date(),
+      message: message,
+      sender: false,
+    };
+    const socketId = getUserSocketId(reciverID);
+    if (socketId) {
+      const io = getIo();
+      io.to(socketId).emit("notification", newMessage);
+      io.to(socketId).emit("messageRoam", newMessage);
+    } else {
+      console.log("no userid provided");
+    }
   }
 }

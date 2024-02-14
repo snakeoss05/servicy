@@ -108,7 +108,6 @@ export default function ProfileSettings() {
             <input
               type="password"
               name="password"
-              
               onChange={handleInputsChanges}
               placeholder="كلمة الدخول"
             />

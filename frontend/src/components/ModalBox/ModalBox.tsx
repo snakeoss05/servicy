@@ -14,7 +14,7 @@ const Modal = ({ isOpen, onClose, children }: modalprops) => {
         <span className="close" onClick={onClose}>
           &times;
         </span>
-        <p>{children}</p>
+        <div>{children}</div>
       </div>
     </div>
   );

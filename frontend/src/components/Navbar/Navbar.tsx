@@ -180,6 +180,9 @@ export default function Navbar() {
       <div className="rightNav">
         {isAuthenticated ? (
           <>
+            <Link to="/CreateService/provideService">
+              <p className="create">أنشاء خدمات</p>
+            </Link>
             <Link to="/login" className="list">
               <i
                 className="fa-solid fa-person-walking-arrow-right"

@@ -5,6 +5,8 @@ import StarRating from "../../components/StarRatings";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Loading from "../../components/loading/Loading";
+import Modal from "../../components/ModalBox/ModalBox";
+import Chat from "../../components/chat/Chat";
 
 export default function Profileinfo() {
   const { serviceid } = useParams();
@@ -13,11 +15,13 @@ export default function Profileinfo() {
   const [rating, setRating] = useState(0);
   const [reviewlist, setReviewlist] = useState();
   const [users, setUsers] = useState();
+  const [modalBox, setModal] = useState(false);
+
   const [newreview, setNewreview] = useState({
+    userid: user.userid,
     profileimg: user.profileimg,
     firstname: user.firstname,
     lastname: user.lastname,
-    userid: user.userid,
     serviceid: serviceid,
     rating: rating,
     comment: "",
@@ -80,11 +84,7 @@ export default function Profileinfo() {
     (state: any) => state.auth.isAuthenticated
   );
 
-  const addReview = async (ratedid) => {
-    setNewreview((state) => ({
-      ...state,
-      ratedid: ratedid,
-    }));
+  const addReview = async () => {
     try {
       const resp = await axios.post(
         "http://localhost:8000/api/service/addreview",
@@ -107,6 +107,9 @@ export default function Profileinfo() {
 
   return users ? (
     <div id="profileinfo" className={darkMode && "css-selector"}>
+      <Modal isOpen={modalBox} onClose={() => setModal(false)}>
+        <Chat users={users[0]} />
+      </Modal>
       <div className="profile">
         <div className="headerprofile">
           <div className="lefprofile">
@@ -125,7 +128,7 @@ export default function Profileinfo() {
               {users[0].firstname} {users[0].lastname}
             </p>
             <span>{users[0].name}</span>
-            <button>تواصل</button>
+            <button onClick={() => setModal(true)}>تواصل</button>
           </div>
           <div className="rightprofile">
             <div>
@@ -183,7 +186,7 @@ export default function Profileinfo() {
             </div>
             {isAuthenticated ? (
               <div className="sendReview">
-                <button onClick={() => addReview(users.userid)}>أرسال</button>
+                <button onClick={addReview}>أرسال</button>
                 <div>
                   <StarRating
                     totalStars={5}
